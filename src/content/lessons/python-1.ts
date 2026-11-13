@@ -1,0 +1,526 @@
+/**
+ * Track: python-1 — "Python Basics"
+ * Written: py-1 and py-2 (all lessons + checkpoints)
+ */
+import type { Checkpoint, Step } from '../types';
+
+export const lessons: Record<string, Step[]> = {
+  // ------------------------------------------------------------------ py-1-hello
+  'py-1-hello': [
+    {
+      kind: 'explain',
+      title: 'Your first program 🎉',
+      body: 'Time to write real code! We will use **Python** — the most popular first language, and one used heavily in grad school, data science and AI.\n\nThe simplest thing a program can do is **show text**. In Python, that\'s `print`:\n\n```python\nprint("Hello, world!")\n```',
+      tip: 'Programmers have started with "Hello, world!" since the 1970s. Welcome to the club.',
+    },
+    {
+      kind: 'explain',
+      title: 'Breaking it down',
+      body: '- `print` is a **function** — a named action Python already knows\n- The **parentheses** `( )` hold what you give to the function\n- The **quotes** `" "` mark text. Text in code is called a **string**\n\nEverything you print shows up in the **output** area.',
+    },
+    {
+      kind: 'choice',
+      prompt: 'What does this code show on screen?',
+      code: 'print("Pizza time")',
+      language: 'python',
+      choices: ['print("Pizza time")', 'Pizza time', '"Pizza time"', 'Nothing'],
+      answer: 1,
+      explanation: 'print shows the text inside the quotes — without the quotes themselves.',
+    },
+    {
+      kind: 'code',
+      prompt: 'Your turn! Write code that prints exactly: **Hello, world!**\n\nPress **Run** to try it, then **Check** when it looks right.',
+      language: 'python',
+      starter: '# Type your code below this line\n',
+      expectedOutput: 'Hello, world!',
+      hints: ['Start with print, then parentheses: print( )', 'Put the text inside quotes inside the parentheses.', 'print("Hello, world!")'],
+      solution: 'print("Hello, world!")',
+      explanation: 'You just wrote and ran your first program!',
+    },
+    {
+      kind: 'fill',
+      prompt: 'Complete the code so it prints: I love coding',
+      template: '___("I love coding")',
+      language: 'python',
+      answers: [['print']],
+      bank: ['print', 'show', 'say', 'write'],
+      explanation: 'Python\'s function for showing text is print.',
+    },
+    {
+      kind: 'explain',
+      title: 'One print, one line',
+      body: 'Each `print` puts its text on a **new line**. Python runs your code **top to bottom**:\n\n```python\nprint("Ready")\nprint("Set")\nprint("Go!")\n```\n\nOutput:\n\n```\nReady\nSet\nGo!\n```',
+    },
+    {
+      kind: 'code',
+      prompt: 'Print these two lines, in this order:\n\n```\nRoses are red\nPython is cool\n```',
+      language: 'python',
+      starter: '',
+      expectedOutput: 'Roses are red\nPython is cool',
+      hints: ['You need two print lines.', 'print("Roses are red") on the first line, then the second print below it.'],
+      solution: 'print("Roses are red")\nprint("Python is cool")',
+    },
+    {
+      kind: 'choice',
+      prompt: 'Which line has a mistake?',
+      choices: ['print("Hi")', "print('Hi')", 'print(Hi")', 'print("Hi there")'],
+      answer: 2,
+      explanation: 'Strings need quotes on BOTH sides. Single quotes \' \' work too, as long as they match.',
+    },
+    {
+      kind: 'explain',
+      title: 'Printing numbers',
+      body: 'Numbers don\'t need quotes. Python can even do math inside `print`:\n\n```python\nprint(7)\nprint(2 + 3)\n```\n\nprints `7` then `5`. But `print("2 + 3")` prints the text `2 + 3` — quotes mean "treat this as text".',
+    },
+    {
+      kind: 'choice',
+      prompt: 'What does this print?',
+      code: 'print("4 + 4")',
+      language: 'python',
+      choices: ['8', '4 + 4', '"4 + 4"', 'An error'],
+      answer: 1,
+      explanation: 'It\'s inside quotes, so it\'s text — printed exactly as written.',
+    },
+  ],
+
+  // ------------------------------------------------------------------ py-1-comments
+  'py-1-comments': [
+    {
+      kind: 'explain',
+      title: 'Notes for humans',
+      body: 'A **comment** is a note in your code that Python **ignores**. In Python, anything after a `#` on a line is a comment:\n\n```python\n# This program greets the user\nprint("Hi!")  # this prints a greeting\n```\n\nOnly `Hi!` is printed.',
+    },
+    {
+      kind: 'choice',
+      prompt: 'Why write comments?',
+      choices: ['They make code run faster', 'They explain the code to people (including future you)', 'Python requires them', 'They print text'],
+      answer: 1,
+      explanation: 'Comments are for humans. Good comments explain WHY code does something.',
+    },
+    {
+      kind: 'choice',
+      prompt: 'What does this print?',
+      code: '# print("one")\nprint("two")',
+      language: 'python',
+      choices: ['one', 'two', 'one and two', 'Nothing'],
+      answer: 1,
+      explanation: 'The first line starts with #, so the whole line is a comment and is ignored.',
+    },
+    {
+      kind: 'code',
+      prompt: 'This code prints two lines, but we only want **Keep me**. Turn the other print into a comment by adding `#` at the start of its line.',
+      language: 'python',
+      starter: 'print("Delete me")\nprint("Keep me")\n',
+      expectedOutput: 'Keep me',
+      tests: [{ name: 'the original line is still there (as a comment)', code: 'assert "Delete me" in __source__, "Don\'t delete the line — comment it out with #"' }],
+      hints: ['Put a # right before print("Delete me")'],
+      solution: '# print("Delete me")\nprint("Keep me")\n',
+      explanation: '"Commenting out" code is a handy way to switch it off without deleting it.',
+    },
+    {
+      kind: 'fill',
+      prompt: 'Which symbol starts a comment in Python?',
+      template: '___ This is a comment',
+      language: 'python',
+      answers: [['#']],
+      bank: ['#', '//', '--', '%'],
+      explanation: 'Python uses #. (Other languages use // or --, which you\'ll see later.)',
+    },
+    {
+      kind: 'choice',
+      prompt: 'What does this print?',
+      code: 'print("Hi")  # print("Bye")',
+      language: 'python',
+      choices: ['Hi', 'Bye', 'Hi Bye', 'An error'],
+      answer: 0,
+      explanation: 'Everything after # is ignored — even code.',
+    },
+  ],
+
+  // ------------------------------------------------------------------ py-1-variables
+  'py-1-variables': [
+    {
+      kind: 'explain',
+      title: 'Boxes with labels 📦',
+      body: 'A **variable** stores a value under a name so you can use it later:\n\n```python\nage = 24\nname = "Sam"\n```\n\nThe `=` sign means **"store the value on the right into the name on the left."** It is called **assignment**.',
+      tip: 'In code, = does NOT mean "equals" like in math. Read age = 24 as "age gets 24".',
+    },
+    {
+      kind: 'explain',
+      title: 'Using variables',
+      body: 'Once stored, use the name **without quotes**:\n\n```python\nname = "Sam"\nprint(name)    # Sam\nprint("name")  # name\n```\n\nWith quotes it\'s the text "name". Without quotes it\'s the variable.',
+    },
+    {
+      kind: 'choice',
+      prompt: 'What does this print?',
+      code: 'city = "Lansing"\nprint(city)',
+      language: 'python',
+      choices: ['city', 'Lansing', '"Lansing"', 'An error'],
+      answer: 1,
+      explanation: 'city holds "Lansing", and print shows its value.',
+    },
+    {
+      kind: 'code',
+      prompt: 'Create a variable called `favorite_food` that holds any food you like (as a string), then print it.',
+      language: 'python',
+      starter: '',
+      tests: [
+        { name: 'favorite_food exists', code: 'assert "favorite_food" in dir(), "Create a variable named favorite_food"' },
+        { name: 'favorite_food is a string', code: 'assert isinstance(favorite_food, str), "Put the food in quotes so it is a string"' },
+        { name: 'it gets printed', code: 'assert __output__.strip() == favorite_food, "Print the variable: print(favorite_food)"' },
+      ],
+      hints: ['favorite_food = "tacos"', 'Then on the next line: print(favorite_food)'],
+      solution: 'favorite_food = "tacos"\nprint(favorite_food)',
+    },
+    {
+      kind: 'explain',
+      title: 'Variables can change',
+      body: 'You can give a variable a new value. The old one is replaced:\n\n```python\nscore = 0\nscore = 10\nprint(score)  # 10\n```\n\nYou can even use the old value to make the new one:\n\n```python\nscore = score + 5   # now 15\n```',
+    },
+    {
+      kind: 'answer',
+      prompt: 'What does this print?',
+      code: 'x = 3\nx = x + 4\nprint(x)',
+      language: 'python',
+      accept: ['7'],
+      explanation: 'x starts as 3. Then x + 4 = 7 is stored back into x.',
+    },
+    {
+      kind: 'explain',
+      title: 'Naming rules',
+      body: 'Variable names:\n\n- can use letters, numbers and `_`\n- **cannot start with a number**\n- cannot contain spaces\n- are case-sensitive: `Age` and `age` are different\n\nPython style is **snake_case**: `first_name`, `total_score`.',
+    },
+    {
+      kind: 'choice',
+      prompt: 'Which is a valid variable name?',
+      choices: ['2nd_place', 'first name', 'first_name', 'first-name'],
+      answer: 2,
+      explanation: 'No leading digits, spaces or dashes. first_name is perfect snake_case.',
+    },
+    {
+      kind: 'code',
+      prompt: 'Make `a = 5` and `b = 8`, then print their sum **using the variables** (not the number 13).',
+      language: 'python',
+      starter: 'a = 5\nb = 8\n',
+      expectedOutput: '13',
+      tests: [{ name: 'uses the variables', code: 'assert "a+b" in __source__.replace(" ", "") or "b+a" in __source__.replace(" ", ""), "Use a + b inside print"' }],
+      hints: ['print( ) can hold math with variables.', 'print(a + b)'],
+      solution: 'a = 5\nb = 8\nprint(a + b)',
+    },
+  ],
+
+  // ------------------------------------------------------------------ py-1-errors
+  'py-1-errors': [
+    {
+      kind: 'explain',
+      title: 'Errors are your friends',
+      body: 'When Python can\'t run your code, it shows an **error message** (also called a **traceback**). It looks scary, but it is Python **telling you exactly what went wrong**.\n\nRead from the **bottom line up**: the last line names the error type and explains it.',
+    },
+    {
+      kind: 'explain',
+      title: 'SyntaxError',
+      body: 'A **SyntaxError** means the code breaks Python\'s grammar:\n\n```python\nprint("Hello"\n```\n\n```\nSyntaxError: \'(\' was never closed\n```\n\nPython even tells you the problem: a missing `)`.',
+    },
+    {
+      kind: 'code',
+      prompt: 'This code has a SyntaxError. Run it to see the message, then fix it so it prints **Fixed it!**',
+      language: 'python',
+      starter: 'print("Fixed it!"\n',
+      expectedOutput: 'Fixed it!',
+      hints: ['Read the error message — what was never closed?', 'Add ) at the end.'],
+      solution: 'print("Fixed it!")\n',
+    },
+    {
+      kind: 'explain',
+      title: 'NameError',
+      body: 'A **NameError** means you used a name Python doesn\'t know — usually a typo, or a missing quote:\n\n```python\nmessage = "hi"\nprint(mesage)\n```\n\n```\nNameError: name \'mesage\' is not defined\n```\n\nThe variable is `message`, but we typed `mesage`.',
+    },
+    {
+      kind: 'choice',
+      prompt: 'What causes the error here?',
+      code: 'print(Hello)',
+      language: 'python',
+      choices: ['print is spelled wrong', 'Hello needs quotes, so Python thinks it is a variable', 'Parentheses are missing', 'Nothing is wrong'],
+      answer: 1,
+      explanation: 'Without quotes, Python looks for a variable named Hello, can\'t find one, and raises a NameError.',
+    },
+    {
+      kind: 'code',
+      prompt: 'Fix the NameError so this prints **42**.',
+      language: 'python',
+      starter: 'answer = 42\nprint(anser)\n',
+      expectedOutput: '42',
+      hints: ['Compare the two spellings carefully.'],
+      solution: 'answer = 42\nprint(answer)\n',
+    },
+    {
+      kind: 'choice',
+      prompt: 'Where should you look FIRST in a Python error message?',
+      choices: ['The very first line', 'The last line', 'Nowhere — just guess', 'The middle'],
+      answer: 1,
+      explanation: 'The last line names the error type and describes the problem. Lines above show where it happened.',
+    },
+    {
+      kind: 'choice',
+      prompt: 'Which error would this code produce?',
+      code: 'print("Total:" 5)',
+      language: 'python',
+      choices: ['SyntaxError', 'NameError', 'No error'],
+      answer: 0,
+      explanation: 'Two things in print need a comma between them. Missing punctuation breaks the grammar → SyntaxError.',
+    },
+  ],
+
+  // ------------------------------------------------------------------ py-2-arithmetic
+  'py-2-arithmetic': [
+    {
+      kind: 'explain',
+      title: 'Python is a calculator',
+      body: '| Operator | Meaning | Example | Result |\n|---|---|---|---|\n| `+` | add | `7 + 2` | `9` |\n| `-` | subtract | `7 - 2` | `5` |\n| `*` | multiply | `7 * 2` | `14` |\n| `/` | divide | `7 / 2` | `3.5` |\n| `**` | power | `7 ** 2` | `49` |\n\nPython follows the same order of operations (PEMDAS) as math.',
+    },
+    {
+      kind: 'answer',
+      prompt: 'What does this print?',
+      code: 'print(3 * 4 + 1)',
+      language: 'python',
+      accept: ['13'],
+      explanation: '3 * 4 = 12, then + 1 = 13.',
+    },
+    {
+      kind: 'answer',
+      prompt: 'What does this print?',
+      code: 'print(2 ** 4)',
+      language: 'python',
+      accept: ['16'],
+      explanation: '** is "to the power of": 2 × 2 × 2 × 2 = 16.',
+    },
+    {
+      kind: 'code',
+      prompt: 'A pizza costs 12 dollars and you buy 3. Store the price in `price`, the count in `count`, and print the total cost using the variables.',
+      language: 'python',
+      starter: 'price = 12\ncount = 3\n# print the total below\n',
+      expectedOutput: '36',
+      hints: ['Multiply with *', 'print(price * count)'],
+      solution: 'price = 12\ncount = 3\nprint(price * count)',
+    },
+    {
+      kind: 'explain',
+      title: 'Updating a value',
+      body: 'Changing a variable based on itself is so common Python has shortcuts:\n\n```python\nscore = 10\nscore += 5   # same as score = score + 5  → 15\nscore -= 3   # → 12\nscore *= 2   # → 24\n```',
+    },
+    {
+      kind: 'answer',
+      prompt: 'What does this print?',
+      code: 'lives = 3\nlives -= 1\nlives += 5\nprint(lives)',
+      language: 'python',
+      accept: ['7'],
+      explanation: '3 - 1 = 2, then 2 + 5 = 7.',
+    },
+    {
+      kind: 'code',
+      prompt: 'Convert 100 degrees Fahrenheit to Celsius using the formula `(f - 32) * 5 / 9` and print the result.',
+      language: 'python',
+      starter: 'f = 100\n',
+      tests: [{ name: 'prints about 37.78', code: 'assert abs(float(__output__.strip()) - 37.7777) < 0.01, "Expected about 37.78"' }],
+      hints: ['Parentheses matter: (f - 32) must happen first.', 'print((f - 32) * 5 / 9)'],
+      solution: 'f = 100\nprint((f - 32) * 5 / 9)',
+    },
+  ],
+
+  // ------------------------------------------------------------------ py-2-division
+  'py-2-division': [
+    {
+      kind: 'explain',
+      title: 'Three kinds of division',
+      body: '- `/` **true division** — always gives a float: `7 / 2` → `3.5`\n- `//` **floor division** — whole part only: `7 // 2` → `3`\n- `%` **modulo** — the **remainder**: `7 % 2` → `1`\n\nThink of sharing 7 cookies between 2 people: each gets 3 (`//`) and 1 is left over (`%`).',
+    },
+    {
+      kind: 'answer',
+      prompt: 'What is 17 // 5?',
+      accept: ['3'],
+      explanation: '5 fits into 17 three whole times.',
+    },
+    {
+      kind: 'answer',
+      prompt: 'What is 17 % 5?',
+      accept: ['2'],
+      explanation: '5 × 3 = 15, and 17 - 15 = 2 left over.',
+    },
+    {
+      kind: 'explain',
+      title: 'Why % is a superpower',
+      body: '`%` answers questions like:\n\n- Is a number **even**? `n % 2 == 0`\n- Is it divisible by 3? `n % 3 == 0`\n- What\'s the last digit? `n % 10`\n- Wrap around a clock: `(hour + 5) % 12`',
+      tip: 'You\'ll use % in tons of coding interview problems.',
+    },
+    {
+      kind: 'choice',
+      prompt: 'What is 10 % 2?',
+      choices: ['5', '0', '2', '1'],
+      answer: 1,
+      explanation: '2 divides 10 evenly, so nothing is left over. That\'s how you know 10 is even.',
+    },
+    {
+      kind: 'code',
+      prompt: 'You have `minutes = 135`. Print the number of **whole hours** on the first line and the **leftover minutes** on the second line.',
+      language: 'python',
+      starter: 'minutes = 135\n',
+      expectedOutput: '2\n15',
+      hints: ['Hours: minutes // 60', 'Leftover: minutes % 60'],
+      solution: 'minutes = 135\nprint(minutes // 60)\nprint(minutes % 60)',
+    },
+    {
+      kind: 'answer',
+      prompt: 'What is the last digit of 4729? Write the Python expression using % that gives it — just type the result.',
+      accept: ['9'],
+      explanation: '4729 % 10 = 9. Dividing by 10 leaves the last digit as the remainder.',
+    },
+  ],
+
+  // ------------------------------------------------------------------ py-2-types
+  'py-2-types': [
+    {
+      kind: 'explain',
+      title: 'Every value has a type',
+      body: 'Python values come in **types**:\n\n- `int` — whole numbers: `5`\n- `float` — decimals: `5.0`\n- `str` — text (strings): `"5"`\n- `bool` — `True` or `False` (coming soon)\n\nCheck a type with `type()`:\n\n```python\nprint(type(5))     # <class \'int\'>\nprint(type("5"))   # <class \'str\'>\n```',
+    },
+    {
+      kind: 'choice',
+      prompt: 'What type is "42"?',
+      choices: ['int', 'float', 'str'],
+      answer: 2,
+      explanation: 'The quotes make it text, even though it looks like a number.',
+    },
+    {
+      kind: 'explain',
+      title: 'Types change how + works',
+      body: '```python\nprint(2 + 3)      # 5   (numbers add)\nprint("2" + "3")  # 23  (strings join!)\nprint("2" + 3)    # TypeError!\n```\n\nPython refuses to add text and a number — it doesn\'t know which you mean.',
+    },
+    {
+      kind: 'choice',
+      prompt: 'What does this print?',
+      code: 'print("ha" + "ha")',
+      language: 'python',
+      choices: ['haha', 'ha ha', 'An error', '2ha'],
+      answer: 0,
+      explanation: '+ joins strings with nothing in between. Joining strings is called concatenation.',
+    },
+    {
+      kind: 'explain',
+      title: 'Converting types',
+      body: 'Use the type name as a function to convert:\n\n```python\nint("42")     # 42\nfloat("3.5")  # 3.5\nstr(99)       # "99"\nint(7.9)      # 7  (chops off the decimal)\n```',
+    },
+    {
+      kind: 'code',
+      prompt: 'Fix the TypeError: convert `age` to a string so this prints **I am 30**',
+      language: 'python',
+      starter: 'age = 30\nprint("I am " + age)\n',
+      expectedOutput: 'I am 30',
+      hints: ['Wrap age in str( )'],
+      solution: 'age = 30\nprint("I am " + str(age))\n',
+    },
+    {
+      kind: 'code',
+      prompt: 'The two numbers below are strings. Convert them to ints and print their **sum** (should be 15).',
+      language: 'python',
+      starter: 'a = "7"\nb = "8"\n',
+      expectedOutput: '15',
+      hints: ['int(a) turns "7" into 7.', 'print(int(a) + int(b))'],
+      solution: 'a = "7"\nb = "8"\nprint(int(a) + int(b))',
+    },
+    {
+      kind: 'answer',
+      prompt: 'What does this print?',
+      code: 'print(int(9.99))',
+      language: 'python',
+      accept: ['9'],
+      explanation: 'int() drops the decimal part — it does not round.',
+    },
+  ],
+
+  // ------------------------------------------------------------------ py-2-math-module
+  'py-2-math-module': [
+    {
+      kind: 'explain',
+      title: 'Borrowing tools with import',
+      body: 'Python comes with extra toolboxes called **modules**. To use one, **import** it at the top of your file:\n\n```python\nimport math\nprint(math.sqrt(16))  # 4.0\nprint(math.pi)        # 3.141592653589793\n```\n\nThe dot means "the `sqrt` that lives inside `math`".',
+    },
+    {
+      kind: 'explain',
+      title: 'Handy math tools',
+      body: '- `math.sqrt(x)` — square root\n- `math.floor(x)` — round **down**: `math.floor(3.7)` → `3`\n- `math.ceil(x)` — round **up**: `math.ceil(3.2)` → `4`\n- `math.pi` — π\n\nBuilt in (no import needed): `round(3.14159, 2)` → `3.14`, `abs(-5)` → `5`, `max(3, 9)` → `9`, `min(3, 9)` → `3`.',
+    },
+    {
+      kind: 'answer',
+      prompt: 'What does this print?',
+      code: 'import math\nprint(math.ceil(4.1))',
+      language: 'python',
+      accept: ['5'],
+      explanation: 'ceil always rounds UP to the next whole number.',
+    },
+    {
+      kind: 'choice',
+      prompt: 'What happens if you use math.sqrt without writing import math?',
+      choices: ['It works anyway', 'NameError: name \'math\' is not defined', 'It returns 0'],
+      answer: 1,
+      explanation: 'Python doesn\'t know about math until you import it.',
+    },
+    {
+      kind: 'code',
+      prompt: 'A circle has radius `r = 3`. Print its area, `π × r²`, **rounded to 2 decimal places**. (Answer: 28.27)',
+      language: 'python',
+      starter: 'import math\nr = 3\n',
+      expectedOutput: '28.27',
+      hints: ['Area = math.pi * r ** 2', 'Wrap it: round(..., 2)'],
+      solution: 'import math\nr = 3\nprint(round(math.pi * r ** 2, 2))',
+    },
+    {
+      kind: 'code',
+      prompt: 'Each bus holds 40 people. Print how many buses are needed for 130 people. (You can\'t have part of a bus!)',
+      language: 'python',
+      starter: 'import math\npeople = 130\n',
+      expectedOutput: '4',
+      hints: ['130 / 40 = 3.25 — you need to round UP.', 'print(math.ceil(people / 40))'],
+      solution: 'import math\npeople = 130\nprint(math.ceil(people / 40))',
+    },
+  ],
+};
+
+export const checkpoints: Record<string, Checkpoint> = {
+  'py-1': {
+    passScore: 0.8,
+    hearts: 3,
+    questions: [
+      { kind: 'choice', prompt: 'What does print do?', choices: ['Sends a document to a printer', 'Shows output on the screen', 'Saves a file', 'Deletes a variable'], answer: 1, explanation: 'print shows text/values in the output.' },
+      { kind: 'code', prompt: 'Print exactly: **Checkpoint time!**', language: 'python', starter: '', expectedOutput: 'Checkpoint time!', solution: 'print("Checkpoint time!")' },
+      { kind: 'choice', prompt: 'What does this print?', code: '# print("A")\nprint("B")', language: 'python', choices: ['A', 'B', 'A B', 'Nothing'], answer: 1, explanation: 'Line 1 is a comment.' },
+      { kind: 'answer', prompt: 'What does this print?', code: 'n = 10\nn = n - 4\nprint(n)', language: 'python', accept: ['6'], explanation: '10 - 4 = 6.' },
+      { kind: 'choice', prompt: 'Which variable name is valid?', choices: ['total score', '3d_model', 'total_score', 'total-score'], answer: 2, explanation: 'snake_case with no leading digit.' },
+      { kind: 'choice', prompt: 'What error does print(greeting) give if greeting was never created?', choices: ['SyntaxError', 'NameError', 'No error'], answer: 1, explanation: 'Unknown name → NameError.' },
+      {
+        kind: 'code', prompt: 'Store your name in a variable called `me` and print it.', language: 'python', starter: '',
+        tests: [
+          { name: 'me is a string', code: 'assert isinstance(me, str)' },
+          { name: 'me is printed', code: 'assert __output__.strip() == me' },
+        ],
+        solution: 'me = "Pip"\nprint(me)',
+      },
+      { kind: 'choice', prompt: 'What does this print?', code: 'word = "cat"\nprint("word")', language: 'python', choices: ['cat', 'word', 'An error'], answer: 1, explanation: 'Quotes make it the literal text "word".' },
+    ],
+  },
+  'py-2': {
+    passScore: 0.8,
+    hearts: 3,
+    questions: [
+      { kind: 'answer', prompt: 'What does print(2 + 3 * 2) show?', accept: ['8'], explanation: 'Multiply first.' },
+      { kind: 'answer', prompt: 'What is 23 // 4?', accept: ['5'], explanation: '4 fits 5 whole times.' },
+      { kind: 'answer', prompt: 'What is 23 % 4?', accept: ['3'], explanation: '23 - 20 = 3.' },
+      { kind: 'choice', prompt: 'What type is 3.0?', choices: ['int', 'float', 'str'], answer: 1, explanation: 'Decimal point → float.' },
+      { kind: 'choice', prompt: 'What does print("5" + "5") show?', choices: ['10', '55', 'An error'], answer: 1, explanation: 'Strings join.' },
+      { kind: 'code', prompt: 'Print whether 91 is even by printing `91 % 2` (it should print 1, meaning odd).', language: 'python', starter: '', expectedOutput: '1', solution: 'print(91 % 2)' },
+      { kind: 'code', prompt: 'Convert `s = "12"` to an int, multiply by 3 and print the result.', language: 'python', starter: 's = "12"\n', expectedOutput: '36', solution: 's = "12"\nprint(int(s) * 3)' },
+      { kind: 'answer', prompt: 'What does math.floor(7.9) return?', accept: ['7'], explanation: 'floor rounds down.' },
+    ],
+  },
+};
+
+export const finalExams: Record<string, Checkpoint> = {};

@@ -1,0 +1,105 @@
+# Loopwise — Project Status & Handoff
+
+> **Read this first when continuing in a new session.** Update it at the end of every session.
+> Last updated: **2026-11-12** (session 4)
+
+## What Loopwise is
+
+A free, Duolingo-style learning platform that takes a complete beginner (no coding, no advanced math) to
+"ready for a CS master's" (target: Georgia Tech OMSCS-level). Bite-sized lessons, real code running in the
+browser, a checkpoint test to finish every unit, a final exam to finish every course, a LeetCode-style
+Practice Arena, Review mode, achievements, full-text search, and accounts that save progress. Hosted on Firebase.
+
+Owner: A.J. (a beginner at hand-coding, so docs and code comments should stay plain-spoken).
+Mascot: **Pip**, an original round purple robot with a loop-shaped antenna (`src/components/Pip.tsx`).
+Never imitate Duolingo's owl or any other brand's character.
+
+## Decisions made
+
+| Topic | Decision |
+|---|---|
+| Name | **Loopwise** (placeholder; easy to rename: search "loopwise" / "Loopwise") |
+| Stack | Vite + React 19 + TypeScript, React Router, Firebase Auth + Firestore + Hosting |
+| Code execution | **Browser-first.** Python via Pyodide (jsDelivr CDN) and JavaScript in Web Workers. Java/C/C++/Go/Rust need a server **later** (Judge0/Piston behind a Firebase Function, Blaze plan). Until then those courses are reading + quizzes. |
+| Math | **Full math track** mixed in with the coding |
+| Repo | Built in the Claude workspace and delivered as a zip; A.J. pushes to his own GitHub |
+| Hosting | Not deployed yet — A.J. will set up Firebase later (`docs/DEPLOY.md`). The app works fully in guest mode without it. |
+| Cost | Free tier (Spark plan) is enough: static hosting + Auth + Firestore; code runs in the learner's browser |
+| Lessons | Wrong answers re-queue at the end of the lesson; no hearts in lessons (beginner-friendly) |
+| Tests | Checkpoints and finals: 3 hearts, pass at 80%; any checkpoint can be taken early to "test out" |
+| Accessibility | WCAG 2.1 AA: 0 serious/critical axe violations in light + dark mode (keep it that way: `scripts/e2e/a11y.py`) |
+
+## Current state
+
+**Courses fully written (every lesson + every checkpoint + final exam):**
+- 🧠 `foundations` How Computers Think — 3 units, 12 lessons
+- 🔢 `math-0` Math Refresher — 4 units, 15 lessons
+- 🐍 `python-1` Python Basics — 8 units, 34 lessons
+- 🛠️ `tools` Developer Tools — 3 units, 11 lessons (command line is hands-on in the practice terminal; Git; editor/packages/venv)
+- 🐉 `python-2` Python Intermediate — 6 units, 19 lessons (exceptions, files, modules, OOP, recursion, testing, generators)
+- ♾️ `discrete-math` Discrete Math — 7 units, 26 lessons (logic, proofs, sets/functions/relations, counting, graphs, number theory/RSA, recurrences)
+- 🧱 `data-structures` Data Structures — 6 units, 18 lessons (arrays/linked lists, stacks/queues, hash tables, trees/BSTs/balancing, heaps, graphs/tries/union-find)
+- ⚙️ `algorithms` Algorithms — 8 units, 31 lessons (Big-O, searching/sorting, two pointers/sliding window/prefix sums/backtracking, divide & conquer + Master Theorem, greedy, dynamic programming, BFS/DFS/topo sort/Dijkstra/MST/Bellman–Ford, P vs NP/reductions/approximation)
+
+Totals: **166 lessons, 45 checkpoints, 8 final exams, 33 practice problems** (of 306 lessons planned across 24 courses). The whole "CS core" a master's program assumes (programming, discrete math, data structures, algorithms) is now written.
+
+**Features:**
+- Learning path with unlocking, test-out checkpoints, final exams; course switcher; "up next" card
+- Question types: explain, multiple choice, fill-in-the-blank (word bank or typed), order-the-lines, short answer, **live code** (Python + JS) with hidden tests, **practice terminal** (simulated bash: ls/cd/mkdir/mv/cp/rm/grep/wc/head/tail/sort, pipes, > and >>; `src/engine/shell.ts`), hints, show-solution after 2 failures; 8-second infinite-loop guard
+- Onboarding (`/welcome`): daily goal + starting point
+- XP, perfect bonus, replay XP, levels, daily goal ring, streaks, weekly chart
+- **Review mode** (`/review`): missed questions are saved and practiced until right; topped up with random questions from finished lessons
+- **19 achievements** (derived from progress, never stored) with "New achievement" on results screens
+- Practice Arena with difficulty/topic filters; Search (MiniSearch) with available content ranked first
+- Accounts (Google + email, password reset) with guest→cloud merge; progress syncs between browser tabs
+- Error boundary (friendly crash screen + "new version" detection), confetti, sounds (mutable), dark mode
+- Installable as an app (PWA manifest + icons; no offline service worker yet)
+- Code-split: Firebase and the code editor load only when needed
+
+**Quality checks (all passing):**
+- `npm test` — structure, wiring, every correct answer grades correct, wrong choices grade wrong, every "What does this print?" snippet is run in real Python and its output matches the answer, every code solution passes and every starter fails
+- `scripts/e2e/play_all.py` — a bot plays **all 61 lessons, 15 checkpoints and 3 finals** in real Chrome with real Python
+- `scripts/e2e/smoke.py` — 30 checks: onboarding, wrong answers/re-queue, Review, failing a checkpoint, locks, search, profile, 404 (desktop + mobile)
+- `scripts/e2e/a11y.py` — axe-core WCAG 2.1 AA audit of 12 pages, light + dark
+
+**Known gaps:**
+- Firebase project not created yet (A.J. — `docs/DEPLOY.md`). Account features are untested against a live Firebase project; test sign-up, sign-in, sync and sign-out right after the first deploy.
+- Fonts load from Google Fonts; Pyodide from jsDelivr (~10 MB first run, then cached). The sandbox could not reach jsDelivr, so the browser tests serve the identical files from `node_modules/pyodide`.
+- No server code runner (Java/C/C++), no SQL runner (plan: sql.js), no HTML/CSS live preview (plan: sandboxed iframe)
+- No offline mode (service worker), leaderboards, friends or reminders/notifications yet
+- `input()` isn't supported in exercises yet (stdin is wired in the engine but has no UI)
+
+## Next steps (in priority order)
+
+1. **A.J.: create the Firebase project and deploy** (`docs/DEPLOY.md`, ~15 min), then test accounts end to end.
+2. Content, in path order:
+   - math track: `prob-stats`, `linear-algebra`, `calculus` (Python spot-checks like the discrete course)
+   - `javascript` (JS runner already works), then `web-1` (needs an HTML/CSS preview runner) and `sql` (needs sql.js)
+   - then `c-systems`, `architecture-os`, `networks-security`, `theory`, `software-engineering`, `ml-intro`, `grad-ready`
+3. Runners: sql.js worker (+ a "sql" exercise type graded by query results); sandboxed-iframe HTML/CSS preview
+4. A simple Git simulator for the practice terminal (init/add/commit/log/branch) to make tl-2 hands-on
+5. Leaderboard (weekly XP, opt-in), reminders, offline service worker, server runner for Java/C/C++
+
+## How to continue in a new session
+
+1. Unzip / clone, `npm install`, `npm test`, `npm run dev`.
+2. Read `docs/ARCHITECTURE.md` and `docs/CONTENT_GUIDE.md`.
+3. Write the next unit in a new `src/content/lessons/<track>-<n>.ts`, register it in `src/content/index.ts`.
+4. Run `npm test`, then the browser checks in `scripts/e2e/README.md`.
+5. Update this file.
+
+## Session log
+
+- **Session 1:** planned the curriculum (24 courses / 306 lessons); built the app, lesson engine, Python/JS
+  runners, progress + accounts, search, Practice Arena, Pip and the design system; 16 lessons + 7 problems.
+- **Session 4:** wrote Data Structures (18) and Algorithms (31) — 49 lessons, 14 checkpoints, 2 finals;
+  14 new Practice Arena problems (33 total, first "hard" ones). New helpers `raises` and `fast` (speed tests);
+  content tests now abort deliberately-slow starters via `__perf_probe__` instead of hanging.
+- **Session 3:** built the practice terminal (simulated shell + new `terminal` exercise type, tests, bot
+  support); wrote Developer Tools (11), Python Intermediate (19) and Discrete Math (26) — 56 lessons,
+  16 checkpoints, 3 final exams. Content tests now also verify terminal solutions.
+- **Session 2:** finished Foundations, Python Basics and the Math Refresher (61 lessons, 15 checkpoints,
+  3 final exams); added Review mode, achievements, onboarding, confetti, error boundary, PWA manifest,
+  password reset, cross-tab sync, lazy loading; 12 new problems (19 total); full WCAG AA contrast pass
+  (new color tokens, darker course colors); content tests that run every snippet; browser bots for all content,
+  key flows and accessibility. Fixed: cloud saves used `merge: true`, which would never delete removed keys.
