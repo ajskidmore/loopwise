@@ -1,7 +1,9 @@
 # Loopwise — Project Status & Handoff
 
 > **Read this first when continuing in a new session.** Update it at the end of every session.
-> Last updated: **2026-11-12** (session 4)
+> Last updated: **2026-11-13** (session 5: Firebase setup + first deploy)
+>
+> **Live:** https://loopwise-de7e1.web.app · **Repo:** https://github.com/ajskidmore/loopwise (private)
 
 ## What Loopwise is
 
@@ -22,8 +24,8 @@ Never imitate Duolingo's owl or any other brand's character.
 | Stack | Vite + React 19 + TypeScript, React Router, Firebase Auth + Firestore + Hosting |
 | Code execution | **Browser-first.** Python via Pyodide (jsDelivr CDN) and JavaScript in Web Workers. Java/C/C++/Go/Rust need a server **later** (Judge0/Piston behind a Firebase Function, Blaze plan). Until then those courses are reading + quizzes. |
 | Math | **Full math track** mixed in with the coding |
-| Repo | Built in the Claude workspace and delivered as a zip; A.J. pushes to his own GitHub |
-| Hosting | Not deployed yet — A.J. will set up Firebase later (`docs/DEPLOY.md`). The app works fully in guest mode without it. |
+| Repo | Private GitHub repo `ajskidmore/loopwise` (personal account). Pushes are pinned to `ajskidmore` in the repo's local git config. |
+| Hosting | **Deployed** to Firebase project `loopwise-de7e1` (personal account ajskidless@gmail.com): Hosting + Auth (Email/Password, Google) + Firestore `(default)` in `us-central1`. The app still works fully in guest mode. |
 | Cost | Free tier (Spark plan) is enough: static hosting + Auth + Firestore; code runs in the learner's browser |
 | Lessons | Wrong answers re-queue at the end of the lesson; no hearts in lessons (beginner-friendly) |
 | Tests | Checkpoints and finals: 3 hearts, pass at 80%; any checkpoint can be taken early to "test out" |
@@ -63,15 +65,16 @@ Totals: **166 lessons, 45 checkpoints, 8 final exams, 33 practice problems** (of
 - `scripts/e2e/a11y.py` — axe-core WCAG 2.1 AA audit of 12 pages, light + dark
 
 **Known gaps:**
-- Firebase project not created yet (A.J. — `docs/DEPLOY.md`). Account features are untested against a live Firebase project; test sign-up, sign-in, sync and sign-out right after the first deploy.
-- Fonts load from Google Fonts; Pyodide from jsDelivr (~10 MB first run, then cached). The sandbox could not reach jsDelivr, so the browser tests serve the identical files from `node_modules/pyodide`.
+- Not yet checked on the live site: password reset email, guest→cloud merge when a guest with progress signs in, sync between two devices, Google sign-in (the walkthrough was done once with one sign-in method), and phones.
+- The browser checks in `scripts/e2e/` (play_all, smoke, a11y) were not rerun against the live site this session (setup only, no app changes).
+- Fonts load from Google Fonts; Pyodide from jsDelivr (~10 MB first run, then cached). On the live site Pyodide loads from jsDelivr fine.
 - No server code runner (Java/C/C++), no SQL runner (plan: sql.js), no HTML/CSS live preview (plan: sandboxed iframe)
 - No offline mode (service worker), leaderboards, friends or reminders/notifications yet
 - `input()` isn't supported in exercises yet (stdin is wired in the engine but has no UI)
 
 ## Next steps (in priority order)
 
-1. **A.J.: create the Firebase project and deploy** (`docs/DEPLOY.md`, ~15 min), then test accounts end to end.
+1. Finish the live checks listed under "Known gaps" (password reset, Google sign-in, guest→cloud merge, a phone).
 2. Content, in path order:
    - math track: `prob-stats`, `linear-algebra`, `calculus` (Python spot-checks like the discrete course)
    - `javascript` (JS runner already works), then `web-1` (needs an HTML/CSS preview runner) and `sql` (needs sql.js)
@@ -88,7 +91,31 @@ Totals: **166 lessons, 45 checkpoints, 8 final exams, 33 practice problems** (of
 4. Run `npm test`, then the browser checks in `scripts/e2e/README.md`.
 5. Update this file.
 
+## Deployment and setup notes (session 5)
+
+- **Updating the site:** `npm run build && firebase deploy --only hosting`. Rules changes: `firebase deploy --only firestore:rules`.
+- **Firebase web config** lives in `.env.local` (never committed; `.gitignore` covers it). Web app id
+  `1:611330314060:web:431f53e553c1e6561649e9`. Get the values again with `firebase apps:sdkconfig web <appId>`.
+- **Accounts:** the Firebase CLI is set to `ajskidless@gmail.com` for this folder (`firebase login:use`); gcloud uses the
+  `personal` configuration. Never use the Eudo work accounts here.
+- **npm on this Mac:** `~/.npmrc` contains `os=linux`, which makes npm install the Linux build tools (rolldown) and
+  breaks tests/builds. Until that line is removed, install with `npm install --os=darwin --cpu=x64`.
+- The Firestore API had to be turned on with `gcloud services enable firestore.googleapis.com` before the database could be created.
+
+**Verified on the live site (2026-11-13):**
+- Site loads with no console errors; lesson `py-1-hello` plays: multiple choice graded right, Python exercise ran
+  in Pyodide (printed `Hello, world!`) and was graded correct.
+- A.J. created an account, finished a lesson, signed out and back in: progress came back.
+- Firestore has the `users/{uid}` document (fields `progress`, `displayName`, `updatedAt`; 10 XP, `py-1-hello` done).
+- Security rules: signed-out reads of `users/*` return "Missing or insufficient permissions". Rules test API
+  (same engine as the console's Rules Playground): a user can read their own doc; reading, updating or deleting
+  another user's doc and listing all users are all denied.
+- `npm test`: 36 passed (2 skipped are on-demand content dump helpers). `npm run build` passes (chunk-size warnings only).
+
 ## Session log
+
+- **Session 5:** Firebase setup and first deploy (no app or content changes): created the web app, Firestore and
+  Auth, deployed Hosting + rules, verified end to end, created the private GitHub repo.
 
 - **Session 1:** planned the curriculum (24 courses / 306 lessons); built the app, lesson engine, Python/JS
   runners, progress + accounts, search, Practice Arena, Pip and the design system; 16 lessons + 7 problems.
