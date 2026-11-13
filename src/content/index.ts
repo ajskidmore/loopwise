@@ -31,6 +31,10 @@ import * as theory from './lessons/theory';
 import * as softwareEngineering from './lessons/software-engineering';
 import * as mlIntro from './lessons/ml-intro';
 import * as gradReady from './lessons/grad-ready';
+import * as cSystems from './lessons/c-systems';
+import * as java from './lessons/java';
+import * as architectureOs from './lessons/architecture-os';
+import * as networksSecurity from './lessons/networks-security';
 
 export interface ContentModule {
   /** lessonId → steps */
@@ -41,7 +45,7 @@ export interface ContentModule {
   finalExams?: Record<string, Checkpoint>;
 }
 
-export const CONTENT_MODULES: ContentModule[] = [foundations, foundations2, math0, math0b, python1, python1b, python1c, python1d, tools, python2a, python2b, discreteA, discreteB, dsA, dsB, alA, alB, probStats, linearAlgebra, calculus, javascript, web1, sql, theory, softwareEngineering, mlIntro, gradReady];
+export const CONTENT_MODULES: ContentModule[] = [foundations, foundations2, math0, math0b, python1, python1b, python1c, python1d, tools, python2a, python2b, discreteA, discreteB, dsA, dsB, alA, alB, probStats, linearAlgebra, calculus, javascript, web1, sql, theory, softwareEngineering, mlIntro, gradReady, cSystems, java, architectureOs, networksSecurity];
 
 function build(): Track[] {
   const tracks = buildRoadmap();
