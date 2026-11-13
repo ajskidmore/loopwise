@@ -169,7 +169,7 @@ Totals: **306 lessons, 92 checkpoints, 24 final exams, 33 practice problems**: e
   42 C/Java snippets verified with clang/javac; play_all (all four) ALL PASSED; smoke 30/30; a11y 0 serious/critical.
   Then wrote **C++** (6 lessons) and **Language Tour** (8 lessons): 5 checkpoints, 2 finals. `npm test` 45 passed;
   26 C++/Swift/Ruby/Bash snippets verified by running them; play_all (both) ALL PASSED; smoke 30/30; a11y 0.
-  **All 306 lessons in 24 courses are now written and tested.**
+  **All 306 lessons in 24 courses are now written, tested and live** (bot passed on the live site).
 
 - **Session 1:** planned the curriculum (24 courses / 306 lessons); built the app, lesson engine, Python/JS
   runners, progress + accounts, search, Practice Arena, Pip and the design system; 16 lessons + 7 problems.
