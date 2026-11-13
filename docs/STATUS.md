@@ -1,7 +1,7 @@
 # Loopwise — Project Status & Handoff
 
 > **Read this first when continuing in a new session.** Update it at the end of every session.
-> Last updated: **2026-11-13** (session 5: Firebase setup + first deploy)
+> Last updated: **2026-11-13** (session 5: Firebase setup + first deploy, Probability & Statistics course)
 >
 > **Live:** https://loopwise-de7e1.web.app · **Repo:** https://github.com/ajskidmore/loopwise (public)
 
@@ -42,8 +42,9 @@ Never imitate Duolingo's owl or any other brand's character.
 - ♾️ `discrete-math` Discrete Math — 7 units, 26 lessons (logic, proofs, sets/functions/relations, counting, graphs, number theory/RSA, recurrences)
 - 🧱 `data-structures` Data Structures — 6 units, 18 lessons (arrays/linked lists, stacks/queues, hash tables, trees/BSTs/balancing, heaps, graphs/tries/union-find)
 - ⚙️ `algorithms` Algorithms — 8 units, 31 lessons (Big-O, searching/sorting, two pointers/sliding window/prefix sums/backtracking, divide & conquer + Master Theorem, greedy, dynamic programming, BFS/DFS/topo sort/Dijkstra/MST/Bellman–Ford, P vs NP/reductions/approximation)
+- 🎲 `prob-stats` Probability & Statistics — 3 units, 9 lessons (probability rules, conditional probability/independence, Bayes, random variables, expected value/variance, binomial/uniform/normal, descriptive stats, sampling/CLT, hypothesis tests/p-values/confidence intervals)
 
-Totals: **166 lessons, 45 checkpoints, 8 final exams, 33 practice problems** (of 306 lessons planned across 24 courses). The whole "CS core" a master's program assumes (programming, discrete math, data structures, algorithms) is now written.
+Totals: **175 lessons, 48 checkpoints, 9 final exams, 33 practice problems** (of 306 lessons planned across 24 courses). The whole "CS core" a master's program assumes (programming, discrete math, data structures, algorithms) is now written.
 
 **Features:**
 - Learning path with unlocking, test-out checkpoints, final exams; course switcher; "up next" card
@@ -76,7 +77,7 @@ Totals: **166 lessons, 45 checkpoints, 8 final exams, 33 practice problems** (of
 
 1. Finish the live checks listed under "Known gaps" (password reset, Google sign-in, guest→cloud merge, a phone).
 2. Content, in path order:
-   - math track: `prob-stats`, `linear-algebra`, `calculus` (Python spot-checks like the discrete course)
+   - math track: `linear-algebra`, `calculus` (Python spot-checks like the discrete course)
    - `javascript` (JS runner already works), then `web-1` (needs an HTML/CSS preview runner) and `sql` (needs sql.js)
    - then `c-systems`, `architecture-os`, `networks-security`, `theory`, `software-engineering`, `ml-intro`, `grad-ready`
 3. Runners: sql.js worker (+ a "sql" exercise type graded by query results); sandboxed-iframe HTML/CSS preview
@@ -114,8 +115,12 @@ Totals: **166 lessons, 45 checkpoints, 8 final exams, 33 practice problems** (of
 
 ## Session log
 
-- **Session 5:** Firebase setup and first deploy (no app or content changes): created the web app, Firestore and
-  Auth, deployed Hosting + rules, verified end to end, created the private GitHub repo.
+- **Session 5:** Firebase setup and first deploy: created the web app, Firestore and Auth, deployed Hosting +
+  rules, verified end to end, created the GitHub repo (now public). Then wrote **Probability & Statistics**
+  (`src/content/lessons/prob-stats.ts`): 9 lessons, 3 checkpoints, 1 final exam, all numbers checked in Python.
+  `npm test` passes; play_all (prob-stats only: 9 lessons, 3 checkpoints, final) ALL PASSED; smoke 30/30; a11y
+  0 serious/critical. `docs/CURRICULUM.md` was NOT regenerated: `npm run curriculum` needs Node 22.6+
+  (`--experimental-strip-types`) and this Mac has Node 20. Run it after upgrading Node.
 
 - **Session 1:** planned the curriculum (24 courses / 306 lessons); built the app, lesson engine, Python/JS
   runners, progress + accounts, search, Practice Arena, Pip and the design system; 16 lessons + 7 problems.
