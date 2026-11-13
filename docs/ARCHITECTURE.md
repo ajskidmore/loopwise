@@ -14,6 +14,7 @@ src/
     runner.ts              main-thread API: runCode(), warmup(), timeouts
     python.worker.ts       Pyodide in a module Web Worker
     js.worker.ts           JavaScript in a Web Worker
+    htmlHarness.ts         HTML/CSS: renders the page in a sandboxed iframe and runs the page checks
     pythonHarness.ts       Python code that runs learner code + tests (shared with tests/)
     jsHarness.ts           same for JS
     shell.ts               pretend bash + in-memory file system for terminal exercises (pure, tested)
@@ -50,6 +51,14 @@ Any checkpoint can be taken early to "test out". Course prerequisites are *recom
 `runner.ts` kills and recreates the worker if a run exceeds 8 s. Tests run after the learner's code, in the
 same scope, and can read `__output__` (everything printed) and `__source__` (the code itself).
 Python = Pyodide (CPython compiled to WebAssembly) from jsDelivr; set `VITE_PYODIDE_URL` to self-host.
+
+**HTML/CSS exercises** (`language: 'html'`) don't use a worker. The learner's page is rendered in an iframe with
+`sandbox="allow-same-origin"` and **no** `allow-scripts`, so `<script>` tags and `onclick=`/`onerror=` attributes
+never run, and forms, popups and navigation are blocked. `allow-same-origin` only lets Loopwise's own checks read
+the rendered page (`htmlHarness.ts`: `$`, `$$`, `text`, `attr`, `css`, `px`, `color`). The visible preview uses
+`sandbox=""` (fully locked). Checks run at 800px wide. Because Node can't render pages, `npm test` only checks
+that HTML checks compile; `scripts/e2e/html_checks.py` verifies every HTML solution passes and every starter fails
+in real Chrome (it uses a hook that exists only when localStorage `loopwise.e2e` = `1`).
 
 **Adding a server-run language later (Java, C, C++…):** add a Firebase Function `runCode` that forwards to a
 Judge0/Piston instance (Blaze plan), then in `runner.ts` add a branch for those languages that `fetch`es the

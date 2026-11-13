@@ -9,6 +9,7 @@
  */
 import type { CodeTest, Language } from '../content/types';
 import type { RunResult } from './types';
+import { runHtml } from './htmlHarness';
 
 const WORKER_FACTORIES: Partial<Record<Language, () => Worker>> = {
   python: () => new Worker(new URL('./python.worker.ts', import.meta.url), { type: 'module' }),
@@ -23,7 +24,22 @@ const workers = new Map<Language, Worker>();
 const ready = new Map<Language, Promise<void>>();
 let nextId = 1;
 
-export const canRun = (lang: Language) => lang in WORKER_FACTORIES;
+/** HTML/CSS needs no worker: it is rendered in a sandboxed iframe on the page (see htmlHarness.ts). */
+const IN_PAGE: Partial<Record<Language, (code: string, tests: CodeTest[]) => Promise<RunResult>>> = {
+  html: runHtml,
+};
+
+export const canRun = (lang: Language) => lang in WORKER_FACTORIES || lang in IN_PAGE;
+
+// Browser test scripts (scripts/e2e/html_checks.py) set localStorage "loopwise.e2e" = "1" to get a direct hook
+// for checking every HTML exercise. Regular visitors never have this flag, so nothing is exposed for them.
+try {
+  if (typeof window !== 'undefined' && window.localStorage?.getItem('loopwise.e2e') === '1') {
+    (window as unknown as { __loopwiseRunHtml?: typeof runHtml }).__loopwiseRunHtml = runHtml;
+  }
+} catch {
+  // localStorage can be blocked (private mode); the hook is only for tests, so ignore.
+}
 
 function getWorker(lang: Language): Worker {
   let w = workers.get(lang);
@@ -60,7 +76,7 @@ function call(lang: Language, msg: object, timeoutMs: number): Promise<{ result?
 
 /** Start loading a language runtime early (e.g. when a lesson with code opens). */
 export function warmup(lang: Language): Promise<void> {
-  if (!canRun(lang)) return Promise.resolve();
+  if (!canRun(lang) || lang in IN_PAGE) return Promise.resolve();
   let p = ready.get(lang);
   if (!p) {
     p = call(lang, { type: 'warmup' }, LOAD_TIMEOUT_MS).then((r) => {
@@ -78,6 +94,8 @@ export async function runCode(lang: Language, code: string, tests: CodeTest[] = 
   if (!canRun(lang)) {
     return { output: '', error: `Running ${lang} in the browser is coming soon.`, tests: [] };
   }
+  const inPage = IN_PAGE[lang];
+  if (inPage) return inPage(code, tests);
   try {
     await warmup(lang);
   } catch (e) {

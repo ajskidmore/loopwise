@@ -88,6 +88,14 @@ Markdown supported in text: paragraphs, `- lists`, ```` ```code blocks``` ````, 
 - Python: use `assert cond, "friendly message"`. JS: use `assert(cond, "friendly message")`.
 - The starter must **fail** and the solution must **pass** — `npm test` enforces both.
 
+### HTML/CSS exercises
+Use `language: 'html'` (see `src/content/lessons/web-1.ts` for the `web()` helper and check builders
+`has`, `textIs`, `countIs`, `cssIs`, `colorIs`, `pxIs`). Checks are JavaScript run against the rendered page with
+helpers `$`, `$$`, `text`, `attr`, `css` (computed style), `px`, `color` (normalizes any CSS color) and `__source__`.
+Compare colors with `color(...)`, never raw strings (browsers report `rgb(...)`). After editing HTML content, run
+`scripts/e2e/html_checks.py` (solution passes, starter fails). Word-bank chips can each be used once: if two
+blanks need the same word, put it in the bank twice (`npm test` enforces this).
+
 ## Practice problems
 
 Add to `src/content/problems.ts`: id, title, difficulty (`intro|easy|medium|hard`), tags, the track it

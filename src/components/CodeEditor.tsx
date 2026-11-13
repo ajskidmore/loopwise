@@ -9,6 +9,7 @@ import { keymap } from '@codemirror/view';
 import { indentWithTab } from '@codemirror/commands';
 import { python } from '@codemirror/lang-python';
 import { javascript } from '@codemirror/lang-javascript';
+import { html } from '@codemirror/lang-html';
 import { oneDark } from '@codemirror/theme-one-dark';
 import type { Language } from '../content/types';
 
@@ -29,7 +30,7 @@ export default function CodeEditor({ value, onChange, language, onRun, readOnly 
   onRunRef.current = onRun;
 
   useEffect(() => {
-    const lang = language === 'python' ? [python()] : language === 'javascript' ? [javascript()] : [];
+    const lang = language === 'python' ? [python()] : language === 'javascript' ? [javascript()] : language === 'html' ? [html()] : [];
     const dark = typeof window !== 'undefined' && window.matchMedia?.('(prefers-color-scheme: dark)').matches;
     const state = EditorState.create({
       doc: value,
@@ -42,7 +43,7 @@ export default function CodeEditor({ value, onChange, language, onRun, readOnly 
           '.cm-gutters': { backgroundColor: '#15171c' },
           '.cm-activeLine, .cm-activeLineGutter': { backgroundColor: 'rgba(255,255,255,0.03)' },
         }, { dark: true }))] : []),
-        EditorView.contentAttributes.of({ 'aria-label': `${language === 'javascript' ? 'JavaScript' : 'Python'} code editor` }),
+        EditorView.contentAttributes.of({ 'aria-label': `${language === 'javascript' ? 'JavaScript' : language === 'html' ? 'HTML' : 'Python'} code editor` }),
         keymap.of([
           { key: 'Mod-Enter', run: () => { onRunRef.current?.(); return true; } },
           indentWithTab,

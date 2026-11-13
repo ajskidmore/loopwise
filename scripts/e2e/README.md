@@ -11,6 +11,9 @@ npx vite preview --port 4173 &            # serve the production build
 DUMP_CONTENT=/tmp/content.json npx vitest run tests/dump-content.test.ts
 python3 scripts/e2e/play_all.py /tmp/content.json     # ~15 min for 166 lessons; prints ALL PASSED
 
+# 1a. HTML/CSS exercises: every solution passes its page checks and every starter fails
+python3 scripts/e2e/html_checks.py /tmp/content.json
+
 # 1b. Submit every Practice Arena solution
 DUMP_PROBLEMS=/tmp/problems.json npx vitest run tests/dump-problems.test.ts
 python3 scripts/e2e/practice_all.py /tmp/problems.json

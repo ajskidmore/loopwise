@@ -184,3 +184,19 @@ describe('code exercises', () => {
     }
   }, 600_000);
 });
+
+describe('html exercises', () => {
+  // Node can't render pages, so solutions/starters are verified in real Chrome by scripts/e2e/html_checks.py.
+  // Here we catch what we can without a browser: missing checks and typos in the check code.
+  it('have page checks that compile, and a starter different from the solution', () => {
+    const htmlSteps = allSteps().filter((x) => x.step.kind === 'code' && x.step.language === 'html') as { where: string; step: CodeStep }[];
+    for (const { where, step } of htmlSteps) {
+      expect(step.expectedOutput, `${where}: HTML exercises are graded by checks, not printed output`).toBeUndefined();
+      expect(step.tests?.length ?? 0, `${where} needs page checks`).toBeGreaterThan(0);
+      expect(step.starter.trim(), `${where} starter equals the solution`).not.toBe(step.solution.trim());
+      for (const t of step.tests ?? []) {
+        expect(() => new Function('$', '$$', 'text', 'attr', 'css', 'px', 'color', 'assert', '__source__', t.code), `${where} check "${t.name}" has a syntax error`).not.toThrow();
+      }
+    }
+  });
+});

@@ -186,9 +186,19 @@ export function CodeView({ step, locked, setCheck, onAttempt }: ViewProps<CodeSt
   const [hintsShown, setHintsShown] = useState(0);
   const [fails, setFails] = useState(0);
   const runnable = canRun(step.language);
+  // HTML/CSS exercises show a live preview of the learner's page instead of printed output.
+  const isHtml = step.language === 'html';
+  const [preview, setPreview] = useState(step.starter);
+
+  useEffect(() => {
+    if (!isHtml) return;
+    const t = setTimeout(() => setPreview(code), 300); // wait for a pause in typing before redrawing
+    return () => clearTimeout(t);
+  }, [code, isHtml]);
 
   useEffect(() => {
     setCode(step.starter);
+    setPreview(step.starter);
     setResult(null);
     setHintsShown(0);
     setFails(0);
@@ -249,10 +259,17 @@ export function CodeView({ step, locked, setCheck, onAttempt }: ViewProps<CodeSt
           {step.hints!.slice(0, hintsShown).map((h, i) => <PipSays key={i} mood="think" size={40}><Markdown text={h} /></PipSays>)}
         </div>
       )}
+      {isHtml && (
+        <div className="html-preview">
+          <div className="output-label">Preview</div>
+          {/* sandbox="" = the most locked-down frame: no scripts, forms, popups or access to Loopwise. */}
+          <iframe className="preview-frame" title="Preview of your page" sandbox="" srcDoc={preview} />
+        </div>
+      )}
       {result && (
         <div className="output">
-          <div className="output-label">Output</div>
-          <pre className="output-text">{result.output || (result.error ? '' : '(nothing was printed)')}</pre>
+          <div className="output-label">{isHtml ? 'Checks' : 'Output'}</div>
+          {!isHtml && <pre className="output-text">{result.output || (result.error ? '' : '(nothing was printed)')}</pre>}
           {result.error && <pre className="output-error">{result.error}</pre>}
           {grade && step.expectedOutput !== undefined && grade.outputMatches === false && (
             <div className="expected">
