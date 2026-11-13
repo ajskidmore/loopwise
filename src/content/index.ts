@@ -22,6 +22,7 @@ import * as dsB from './lessons/ds-b';
 import * as alA from './lessons/al-a';
 import * as alB from './lessons/al-b';
 import * as probStats from './lessons/prob-stats';
+import * as linearAlgebra from './lessons/linear-algebra';
 
 export interface ContentModule {
   /** lessonId → steps */
@@ -32,7 +33,7 @@ export interface ContentModule {
   finalExams?: Record<string, Checkpoint>;
 }
 
-export const CONTENT_MODULES: ContentModule[] = [foundations, foundations2, math0, math0b, python1, python1b, python1c, python1d, tools, python2a, python2b, discreteA, discreteB, dsA, dsB, alA, alB, probStats];
+export const CONTENT_MODULES: ContentModule[] = [foundations, foundations2, math0, math0b, python1, python1b, python1c, python1d, tools, python2a, python2b, discreteA, discreteB, dsA, dsB, alA, alB, probStats, linearAlgebra];
 
 function build(): Track[] {
   const tracks = buildRoadmap();
