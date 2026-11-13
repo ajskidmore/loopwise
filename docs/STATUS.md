@@ -1,7 +1,7 @@
 # Loopwise — Project Status & Handoff
 
 > **Read this first when continuing in a new session.** Update it at the end of every session.
-> Last updated: **2026-11-13** (session 5: Firebase setup + first deploy, Probability & Statistics and Linear Algebra courses)
+> Last updated: **2026-11-13** (session 5: Firebase setup + first deploy, Probability & Statistics, Linear Algebra and Calculus courses)
 >
 > **Live:** https://loopwise-de7e1.web.app · **Repo:** https://github.com/ajskidmore/loopwise (public)
 
@@ -44,8 +44,9 @@ Never imitate Duolingo's owl or any other brand's character.
 - ⚙️ `algorithms` Algorithms — 8 units, 31 lessons (Big-O, searching/sorting, two pointers/sliding window/prefix sums/backtracking, divide & conquer + Master Theorem, greedy, dynamic programming, BFS/DFS/topo sort/Dijkstra/MST/Bellman–Ford, P vs NP/reductions/approximation)
 - 🎲 `prob-stats` Probability & Statistics — 3 units, 9 lessons (probability rules, conditional probability/independence, Bayes, random variables, expected value/variance, binomial/uniform/normal, descriptive stats, sampling/CLT, hypothesis tests/p-values/confidence intervals)
 - 📐 `linear-algebra` Linear Algebra — 3 units, 9 lessons (vectors, magnitude, dot product/cosine similarity, matrices, matrix multiplication as transformations, systems/Gaussian elimination, determinants/inverses, span/basis/rank, eigenvalues/eigenvectors, data matrices/linear models/PCA intuition). Plain Python lists, no numpy.
+- 📈 `calculus` Calculus Essentials — 3 units, 8 lessons (limits, derivatives as slopes, power/product/chain rules, optimization, partial derivatives and gradients, gradient descent, integrals as Riemann sums, fundamental theorem). Answers are numbers, not formulas, so they grade reliably.
 
-Totals: **184 lessons, 51 checkpoints, 10 final exams, 33 practice problems** (of 306 lessons planned across 24 courses). The whole "CS core" a master's program assumes (programming, discrete math, data structures, algorithms) is now written.
+Totals: **192 lessons, 54 checkpoints, 11 final exams, 33 practice problems** (of 306 lessons planned across 24 courses). The whole "CS core" a master's program assumes (programming, discrete math, data structures, algorithms) is now written.
 
 **Features:**
 - Learning path with unlocking, test-out checkpoints, final exams; course switcher; "up next" card
@@ -78,7 +79,6 @@ Totals: **184 lessons, 51 checkpoints, 10 final exams, 33 practice problems** (o
 
 1. Finish the live checks listed under "Known gaps" (password reset, Google sign-in, guest→cloud merge, a phone).
 2. Content, in path order:
-   - math track: `calculus` (Python spot-checks like the discrete course)
    - `javascript` (JS runner already works), then `web-1` (needs an HTML/CSS preview runner) and `sql` (needs sql.js)
    - then `c-systems`, `architecture-os`, `networks-security`, `theory`, `software-engineering`, `ml-intro`, `grad-ready`
 3. Runners: sql.js worker (+ a "sql" exercise type graded by query results); sandboxed-iframe HTML/CSS preview
@@ -124,6 +124,8 @@ Totals: **184 lessons, 51 checkpoints, 10 final exams, 33 practice problems** (o
   (`--experimental-strip-types`) and this Mac has Node 20. Run it after upgrading Node.
   Then wrote **Linear Algebra** (`src/content/lessons/linear-algebra.ts`): 9 lessons, 3 checkpoints, 1 final exam.
   Same checks: `npm test` passes; play_all (linear-algebra only) ALL PASSED; smoke 30/30; a11y 0 serious/critical.
+  Then wrote **Calculus Essentials** (`src/content/lessons/calculus.ts`): 8 lessons, 3 checkpoints, 1 final exam, same
+  checks, all passing. The math track (math-0, discrete, prob-stats, linear-algebra, calculus) is now complete.
 
 - **Session 1:** planned the curriculum (24 courses / 306 lessons); built the app, lesson engine, Python/JS
   runners, progress + accounts, search, Practice Arena, Pip and the design system; 16 lessons + 7 problems.
