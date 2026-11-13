@@ -1,7 +1,7 @@
 # Loopwise — Project Status & Handoff
 
 > **Read this first when continuing in a new session.** Update it at the end of every session.
-> Last updated: **2026-11-13** (session 5: Firebase setup + first deploy, Probability & Statistics, Linear Algebra, Calculus, JavaScript, Web and SQL courses + HTML/CSS preview + SQL runner)
+> Last updated: **2026-11-13** (session 5: Firebase setup + first deploy, Probability & Statistics, Linear Algebra, Calculus, JavaScript, Web, SQL, Theory and Software Engineering courses + HTML/CSS preview + SQL runner)
 >
 > **Live:** https://loopwise-de7e1.web.app · **Repo:** https://github.com/ajskidmore/loopwise (public)
 
@@ -48,8 +48,10 @@ Never imitate Duolingo's owl or any other brand's character.
 - ⚡ `javascript` JavaScript — 5 units, 13 lessons (console.log/let/const/template literals, types and ===, if/loops/FizzBuzz, functions and arrow functions, arrays with map/filter/reduce, objects and JSON, the DOM and XSS safety, events, callbacks and the event loop, promises and async/await, fetch and status codes, TypeScript types, interfaces and generics). The JS runner is synchronous with no DOM, so DOM/event/async exercises are plain functions with fake objects, and the TypeScript unit is explain + quiz.
 - 🌐 `web-1` Web Basics: HTML & CSS — 2 units, 9 lessons (tags/links/images, page structure and semantic tags, forms, accessible HTML, selectors and the cascade, box model, flexbox, grid, responsive design/media queries). Hands-on with the new live HTML/CSS preview.
 - 🗄️ `sql` SQL & Databases — 3 units, 9 lessons (SELECT/WHERE/ORDER BY, aggregates/GROUP BY/HAVING, JOINs incl. LEFT JOIN, INSERT/UPDATE/DELETE, CREATE TABLE and keys, normalization 1NF–3NF, indexes/B-trees, transactions/ACID). Real SQLite (sql.js) in the browser against a small sample shop (`SHOP` in `src/content/lessons/sql.ts`).
+- 🤖 `theory` Theory of Computation — 2 units, 6 lessons (DFAs/NFAs, regular expressions, context-free grammars and pushdown automata, Turing machines and Church–Turing, the halting problem and Rice's theorem, P/NP/NP-complete/PSPACE). Python simulations: DFA runner, ZIP regex, balanced parens, binary-increment TM, Collatz, subset-sum verifier.
+- 🏗️ `software-engineering` Software Engineering — 3 units, 8 lessons (DRY/KISS/YAGNI/SOLID, strategy/observer/factory, refactoring and code smells, testing pyramid/TDD, code review, agile/Scrum/Kanban/user stories, REST API design, scaling/load balancing/caching). Python: DRY refactor, Observer Button, Strategy discounts, magic-number refactor, writing asserts, a router, memoization.
 
-Totals: **223 lessons, 64 checkpoints, 14 final exams, 33 practice problems** (of 306 lessons planned across 24 courses). The whole "CS core" a master's program assumes (programming, discrete math, data structures, algorithms) is now written.
+Totals: **237 lessons, 69 checkpoints, 16 final exams, 33 practice problems** (of 306 lessons planned across 24 courses). The whole "CS core" a master's program assumes (programming, discrete math, data structures, algorithms) is now written.
 
 **Features:**
 - Learning path with unlocking, test-out checkpoints, final exams; course switcher; "up next" card
@@ -83,7 +85,8 @@ Totals: **223 lessons, 64 checkpoints, 14 final exams, 33 practice problems** (o
 
 1. Finish the live checks listed under "Known gaps" (password reset, Google sign-in, guest→cloud merge, a phone).
 2. Content, in path order:
-   - `c-systems`, `architecture-os`, `networks-security`, `theory`, `software-engineering`, `ml-intro`, `grad-ready`
+   - `ml-intro` and `grad-ready` (browser-runnable with Python)
+   - `c-systems`, `java`, `architecture-os`, `networks-security`: code can't run in the browser; either reading + quiz courses or a server runner (Firebase Functions + Blaze plan = cost, owner decision)
 3. A simple Git simulator for the practice terminal (init/add/commit/log/branch) to make tl-2 hands-on
 4. Leaderboard (weekly XP, opt-in), reminders, offline service worker, server runner for Java/C/C++
 
@@ -145,6 +148,9 @@ Totals: **223 lessons, 64 checkpoints, 14 final exams, 33 practice problems** (o
   "What does this query return?" question against the sample data (it caught one wrong answer, fixed). New
   `tests/sql.test.ts` (7 runner tests). play_all (sql) ALL PASSED; smoke 30/30; a11y 0; axe on the SQL exercise
   screen in light + dark: 0 violations.
+  Then wrote **Theory of Computation** (`theory.ts`, 6 lessons, 2 checkpoints, final) and **Software Engineering**
+  (`software-engineering.ts`, 8 lessons, 3 checkpoints, final). `npm test` 45 passed; play_all (both) ALL PASSED;
+  smoke 30/30; a11y 0 serious/critical.
 
 - **Session 1:** planned the curriculum (24 courses / 306 lessons); built the app, lesson engine, Python/JS
   runners, progress + accounts, search, Practice Arena, Pip and the design system; 16 lessons + 7 problems.

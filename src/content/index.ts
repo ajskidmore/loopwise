@@ -27,6 +27,8 @@ import * as calculus from './lessons/calculus';
 import * as javascript from './lessons/javascript';
 import * as web1 from './lessons/web-1';
 import * as sql from './lessons/sql';
+import * as theory from './lessons/theory';
+import * as softwareEngineering from './lessons/software-engineering';
 
 export interface ContentModule {
   /** lessonId → steps */
@@ -37,7 +39,7 @@ export interface ContentModule {
   finalExams?: Record<string, Checkpoint>;
 }
 
-export const CONTENT_MODULES: ContentModule[] = [foundations, foundations2, math0, math0b, python1, python1b, python1c, python1d, tools, python2a, python2b, discreteA, discreteB, dsA, dsB, alA, alB, probStats, linearAlgebra, calculus, javascript, web1, sql];
+export const CONTENT_MODULES: ContentModule[] = [foundations, foundations2, math0, math0b, python1, python1b, python1c, python1d, tools, python2a, python2b, discreteA, discreteB, dsA, dsB, alA, alB, probStats, linearAlgebra, calculus, javascript, web1, sql, theory, softwareEngineering];
 
 function build(): Track[] {
   const tracks = buildRoadmap();
