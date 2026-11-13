@@ -83,6 +83,15 @@ describe('structure', () => {
           const blanks = q.template.split('___').length - 1;
           expect(blanks, `${where} blanks vs answers`).toBe(q.answers.length);
           if (q.bank) for (const a of q.answers) expect(a.some((x) => q.bank!.includes(x)), `${where} bank missing answer`).toBe(true);
+          if (q.bank) {
+            // Each word-bank chip can be used once, so two blanks needing the same word need two chips.
+            const needed = q.answers.map((a) => a.find((x) => q.bank!.includes(x)));
+            for (const word of new Set(needed)) {
+              const need = needed.filter((w) => w === word).length;
+              const have = q.bank.filter((w) => w === word).length;
+              expect(have, `${where} needs "${word}" ${need} times but the bank has it ${have} time(s)`).toBeGreaterThanOrEqual(need);
+            }
+          }
           break;
         }
         case 'order':

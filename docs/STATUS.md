@@ -1,7 +1,7 @@
 # Loopwise — Project Status & Handoff
 
 > **Read this first when continuing in a new session.** Update it at the end of every session.
-> Last updated: **2026-11-13** (session 5: Firebase setup + first deploy, Probability & Statistics, Linear Algebra and Calculus courses)
+> Last updated: **2026-11-13** (session 5: Firebase setup + first deploy, Probability & Statistics, Linear Algebra, Calculus and JavaScript courses)
 >
 > **Live:** https://loopwise-de7e1.web.app · **Repo:** https://github.com/ajskidmore/loopwise (public)
 
@@ -45,8 +45,9 @@ Never imitate Duolingo's owl or any other brand's character.
 - 🎲 `prob-stats` Probability & Statistics — 3 units, 9 lessons (probability rules, conditional probability/independence, Bayes, random variables, expected value/variance, binomial/uniform/normal, descriptive stats, sampling/CLT, hypothesis tests/p-values/confidence intervals)
 - 📐 `linear-algebra` Linear Algebra — 3 units, 9 lessons (vectors, magnitude, dot product/cosine similarity, matrices, matrix multiplication as transformations, systems/Gaussian elimination, determinants/inverses, span/basis/rank, eigenvalues/eigenvectors, data matrices/linear models/PCA intuition). Plain Python lists, no numpy.
 - 📈 `calculus` Calculus Essentials — 3 units, 8 lessons (limits, derivatives as slopes, power/product/chain rules, optimization, partial derivatives and gradients, gradient descent, integrals as Riemann sums, fundamental theorem). Answers are numbers, not formulas, so they grade reliably.
+- ⚡ `javascript` JavaScript — 5 units, 13 lessons (console.log/let/const/template literals, types and ===, if/loops/FizzBuzz, functions and arrow functions, arrays with map/filter/reduce, objects and JSON, the DOM and XSS safety, events, callbacks and the event loop, promises and async/await, fetch and status codes, TypeScript types, interfaces and generics). The JS runner is synchronous with no DOM, so DOM/event/async exercises are plain functions with fake objects, and the TypeScript unit is explain + quiz.
 
-Totals: **192 lessons, 54 checkpoints, 11 final exams, 33 practice problems** (of 306 lessons planned across 24 courses). The whole "CS core" a master's program assumes (programming, discrete math, data structures, algorithms) is now written.
+Totals: **205 lessons, 59 checkpoints, 12 final exams, 33 practice problems** (of 306 lessons planned across 24 courses). The whole "CS core" a master's program assumes (programming, discrete math, data structures, algorithms) is now written.
 
 **Features:**
 - Learning path with unlocking, test-out checkpoints, final exams; course switcher; "up next" card
@@ -79,7 +80,7 @@ Totals: **192 lessons, 54 checkpoints, 11 final exams, 33 practice problems** (o
 
 1. Finish the live checks listed under "Known gaps" (password reset, Google sign-in, guest→cloud merge, a phone).
 2. Content, in path order:
-   - `javascript` (JS runner already works), then `web-1` (needs an HTML/CSS preview runner) and `sql` (needs sql.js)
+   - `web-1` (needs an HTML/CSS preview runner) and `sql` (needs sql.js)
    - then `c-systems`, `architecture-os`, `networks-security`, `theory`, `software-engineering`, `ml-intro`, `grad-ready`
 3. Runners: sql.js worker (+ a "sql" exercise type graded by query results); sandboxed-iframe HTML/CSS preview
 4. A simple Git simulator for the practice terminal (init/add/commit/log/branch) to make tl-2 hands-on
@@ -126,6 +127,10 @@ Totals: **192 lessons, 54 checkpoints, 11 final exams, 33 practice problems** (o
   Same checks: `npm test` passes; play_all (linear-algebra only) ALL PASSED; smoke 30/30; a11y 0 serious/critical.
   Then wrote **Calculus Essentials** (`src/content/lessons/calculus.ts`): 8 lessons, 3 checkpoints, 1 final exam, same
   checks, all passing. The math track (math-0, discrete, prob-stats, linear-algebra, calculus) is now complete.
+  Then wrote **JavaScript** (`src/content/lessons/javascript.ts`): 13 lessons, 5 checkpoints, 1 final exam. `npm test` doesn't
+  run JS "What does this print?" snippets, so all 36 were run in Node by hand (0 mismatches). The bot caught two word-bank
+  questions that needed the same word twice (unanswerable: each chip can be used once); fixed, and `tests/content.test.ts`
+  now fails on that pattern. play_all (javascript only) ALL PASSED; smoke 30/30; a11y 0 serious/critical.
 
 - **Session 1:** planned the curriculum (24 courses / 306 lessons); built the app, lesson engine, Python/JS
   runners, progress + accounts, search, Practice Arena, Pip and the design system; 16 lessons + 7 problems.
