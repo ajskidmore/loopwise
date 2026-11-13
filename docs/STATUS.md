@@ -3,7 +3,7 @@
 > **Read this first when continuing in a new session.** Update it at the end of every session.
 > Last updated: **2026-11-13** (session 5: Firebase setup + first deploy)
 >
-> **Live:** https://loopwise-de7e1.web.app · **Repo:** https://github.com/ajskidmore/loopwise (private)
+> **Live:** https://loopwise-de7e1.web.app · **Repo:** https://github.com/ajskidmore/loopwise (public)
 
 ## What Loopwise is
 
@@ -24,7 +24,7 @@ Never imitate Duolingo's owl or any other brand's character.
 | Stack | Vite + React 19 + TypeScript, React Router, Firebase Auth + Firestore + Hosting |
 | Code execution | **Browser-first.** Python via Pyodide (jsDelivr CDN) and JavaScript in Web Workers. Java/C/C++/Go/Rust need a server **later** (Judge0/Piston behind a Firebase Function, Blaze plan). Until then those courses are reading + quizzes. |
 | Math | **Full math track** mixed in with the coding |
-| Repo | Private GitHub repo `ajskidmore/loopwise` (personal account). Pushes are pinned to `ajskidmore` in the repo's local git config. |
+| Repo | Public GitHub repo `ajskidmore/loopwise` (made public 2026-11-13) (personal account). Pushes are pinned to `ajskidmore` in the repo's local git config. |
 | Hosting | **Deployed** to Firebase project `loopwise-de7e1` (personal account ajskidless@gmail.com): Hosting + Auth (Email/Password, Google) + Firestore `(default)` in `us-central1`. The app still works fully in guest mode. |
 | Cost | Free tier (Spark plan) is enough: static hosting + Auth + Firestore; code runs in the learner's browser |
 | Lessons | Wrong answers re-queue at the end of the lesson; no hearts in lessons (beginner-friendly) |
