@@ -14,6 +14,7 @@ import { runHtml } from './htmlHarness';
 const WORKER_FACTORIES: Partial<Record<Language, () => Worker>> = {
   python: () => new Worker(new URL('./python.worker.ts', import.meta.url), { type: 'module' }),
   javascript: () => new Worker(new URL('./js.worker.ts', import.meta.url), { type: 'module' }),
+  sql: () => new Worker(new URL('./sql.worker.ts', import.meta.url), { type: 'module' }),
 };
 
 /** Seconds a single run may take (Python's first load is excluded via warmup). */
@@ -90,7 +91,8 @@ export function warmup(lang: Language): Promise<void> {
   return p;
 }
 
-export async function runCode(lang: Language, code: string, tests: CodeTest[] = [], stdin = ''): Promise<RunResult> {
+/** `setup` is used by SQL exercises: statements that create the sample tables before the learner's code runs. */
+export async function runCode(lang: Language, code: string, tests: CodeTest[] = [], stdin = '', setup = ''): Promise<RunResult> {
   if (!canRun(lang)) {
     return { output: '', error: `Running ${lang} in the browser is coming soon.`, tests: [] };
   }
@@ -101,7 +103,7 @@ export async function runCode(lang: Language, code: string, tests: CodeTest[] = 
   } catch (e) {
     return { output: '', error: (e as Error).message + '\nCheck your internet connection and try again.', tests: [] };
   }
-  const r = await call(lang, { type: 'run', code, tests, stdin }, RUN_TIMEOUT_MS);
+  const r = await call(lang, { type: 'run', code, tests, stdin, setup }, RUN_TIMEOUT_MS);
   if (r.fatal) return { output: '', error: r.fatal, tests: [] };
   const result = r.result!;
   if (result.timedOut) {

@@ -98,6 +98,11 @@ export interface CodeStep {
   /** If set, printed output must match exactly (after trimming trailing whitespace). */
   expectedOutput?: string;
   tests?: CodeTest[];
+  /**
+   * SQL only: statements run on a fresh database BEFORE the learner's code (create tables, insert sample rows).
+   * Every run starts from scratch, so learners can't break the data.
+   */
+  setup?: string;
   hints?: string[];
   /** Reference solution. Shown after 2 failed attempts and used by the automated content tests. */
   solution: string;

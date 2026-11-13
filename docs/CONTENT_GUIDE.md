@@ -88,6 +88,13 @@ Markdown supported in text: paragraphs, `- lists`, ```` ```code blocks``` ````, 
 - Python: use `assert cond, "friendly message"`. JS: use `assert(cond, "friendly message")`.
 - The starter must **fail** and the solution must **pass** — `npm test` enforces both.
 
+### SQL exercises
+Use the `q()` helper in `src/content/lessons/sql.ts` (it sets `language: 'sql'` and `setup: SHOP`, the sample shop).
+Check builders: `rowsAre` (exact order), `sameRows` (any order), `colsAre`, `afterRows(sql, rows, msg)` for
+INSERT/UPDATE/DELETE/CREATE, `mentions(regex, msg)`. Give an exercise its own `setup` when it needs other tables.
+Questions starting "What does this query return?", "How many rows does this query return?" or "How many products
+are left…" are run against SHOP by `npm test`. Keep prices whole numbers to avoid floating-point surprises.
+
 ### HTML/CSS exercises
 Use `language: 'html'` (see `src/content/lessons/web-1.ts` for the `web()` helper and check builders
 `has`, `textIs`, `countIs`, `cssIs`, `colorIs`, `pxIs`). Checks are JavaScript run against the rendered page with

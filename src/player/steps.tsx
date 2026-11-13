@@ -210,7 +210,7 @@ export function CodeView({ step, locked, setCheck, onAttempt }: ViewProps<CodeSt
 
   const execute = async () => {
     setRunning(true);
-    const r = await runCode(step.language, code, step.tests ?? []);
+    const r = await runCode(step.language, code, step.tests ?? [], '', step.setup ?? '');
     setResult(r);
     setRunning(false);
     return r;
@@ -244,7 +244,7 @@ export function CodeView({ step, locked, setCheck, onAttempt }: ViewProps<CodeSt
       </Suspense>
       <div className="code-actions">
         <button className="btn btn-secondary btn-sm" onClick={execute} disabled={!runnable || running || locked}>
-          {running ? 'Running…' : loadingRuntime ? 'Loading Python…' : '▶ Run'}
+          {running ? 'Running…' : loadingRuntime ? `Loading ${step.language === 'sql' ? 'SQL' : 'Python'}…` : '▶ Run'}
         </button>
         <button className="btn btn-ghost btn-sm" onClick={() => { setCode(step.starter); setResult(null); }} disabled={locked}>Reset</button>
         {step.hints && hintsShown < step.hints.length && (

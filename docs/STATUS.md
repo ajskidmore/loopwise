@@ -1,7 +1,7 @@
 # Loopwise — Project Status & Handoff
 
 > **Read this first when continuing in a new session.** Update it at the end of every session.
-> Last updated: **2026-11-13** (session 5: Firebase setup + first deploy, Probability & Statistics, Linear Algebra, Calculus, JavaScript and Web courses + HTML/CSS preview)
+> Last updated: **2026-11-13** (session 5: Firebase setup + first deploy, Probability & Statistics, Linear Algebra, Calculus, JavaScript, Web and SQL courses + HTML/CSS preview + SQL runner)
 >
 > **Live:** https://loopwise-de7e1.web.app · **Repo:** https://github.com/ajskidmore/loopwise (public)
 
@@ -47,8 +47,9 @@ Never imitate Duolingo's owl or any other brand's character.
 - 📈 `calculus` Calculus Essentials — 3 units, 8 lessons (limits, derivatives as slopes, power/product/chain rules, optimization, partial derivatives and gradients, gradient descent, integrals as Riemann sums, fundamental theorem). Answers are numbers, not formulas, so they grade reliably.
 - ⚡ `javascript` JavaScript — 5 units, 13 lessons (console.log/let/const/template literals, types and ===, if/loops/FizzBuzz, functions and arrow functions, arrays with map/filter/reduce, objects and JSON, the DOM and XSS safety, events, callbacks and the event loop, promises and async/await, fetch and status codes, TypeScript types, interfaces and generics). The JS runner is synchronous with no DOM, so DOM/event/async exercises are plain functions with fake objects, and the TypeScript unit is explain + quiz.
 - 🌐 `web-1` Web Basics: HTML & CSS — 2 units, 9 lessons (tags/links/images, page structure and semantic tags, forms, accessible HTML, selectors and the cascade, box model, flexbox, grid, responsive design/media queries). Hands-on with the new live HTML/CSS preview.
+- 🗄️ `sql` SQL & Databases — 3 units, 9 lessons (SELECT/WHERE/ORDER BY, aggregates/GROUP BY/HAVING, JOINs incl. LEFT JOIN, INSERT/UPDATE/DELETE, CREATE TABLE and keys, normalization 1NF–3NF, indexes/B-trees, transactions/ACID). Real SQLite (sql.js) in the browser against a small sample shop (`SHOP` in `src/content/lessons/sql.ts`).
 
-Totals: **214 lessons, 61 checkpoints, 13 final exams, 33 practice problems** (of 306 lessons planned across 24 courses). The whole "CS core" a master's program assumes (programming, discrete math, data structures, algorithms) is now written.
+Totals: **223 lessons, 64 checkpoints, 14 final exams, 33 practice problems** (of 306 lessons planned across 24 courses). The whole "CS core" a master's program assumes (programming, discrete math, data structures, algorithms) is now written.
 
 **Features:**
 - Learning path with unlocking, test-out checkpoints, final exams; course switcher; "up next" card
@@ -73,7 +74,8 @@ Totals: **214 lessons, 61 checkpoints, 13 final exams, 33 practice problems** (o
 - Not yet checked on the live site: password reset email, guest→cloud merge when a guest with progress signs in, sync between two devices, Google sign-in (the walkthrough was done once with one sign-in method), and phones.
 - The browser checks in `scripts/e2e/` (play_all, smoke, a11y) were not rerun against the live site this session (setup only, no app changes).
 - Fonts load from Google Fonts; Pyodide from jsDelivr (~10 MB first run, then cached). On the live site Pyodide loads from jsDelivr fine.
-- No server code runner (Java/C/C++), no SQL runner (plan: sql.js)
+- No server code runner (Java/C/C++)
+- On Node 20, Vitest crashes while *printing* a failed test (`Map.groupBy is not a function`), hiding the details. Workaround: `npx vitest run --reporter=json --outputFile=/tmp/vt.json`. Upgrading to Node 22+ fixes it (and `npm run curriculum`).
 - No offline mode (service worker), leaderboards, friends or reminders/notifications yet
 - `input()` isn't supported in exercises yet (stdin is wired in the engine but has no UI)
 
@@ -81,11 +83,9 @@ Totals: **214 lessons, 61 checkpoints, 13 final exams, 33 practice problems** (o
 
 1. Finish the live checks listed under "Known gaps" (password reset, Google sign-in, guest→cloud merge, a phone).
 2. Content, in path order:
-   - `sql` (needs sql.js)
-   - then `c-systems`, `architecture-os`, `networks-security`, `theory`, `software-engineering`, `ml-intro`, `grad-ready`
-3. Runners: sql.js worker (+ a "sql" exercise type graded by query results)
-4. A simple Git simulator for the practice terminal (init/add/commit/log/branch) to make tl-2 hands-on
-5. Leaderboard (weekly XP, opt-in), reminders, offline service worker, server runner for Java/C/C++
+   - `c-systems`, `architecture-os`, `networks-security`, `theory`, `software-engineering`, `ml-intro`, `grad-ready`
+3. A simple Git simulator for the practice terminal (init/add/commit/log/branch) to make tl-2 hands-on
+4. Leaderboard (weekly XP, opt-in), reminders, offline service worker, server runner for Java/C/C++
 
 ## How to continue in a new session
 
@@ -138,6 +138,13 @@ Totals: **214 lessons, 61 checkpoints, 13 final exams, 33 practice problems** (o
   (12 HTML exercises: solutions pass, starters fail) ALL PASSED; a `<script>`/`onerror` page can't run code in the
   parent; near-miss CSS (blue for navy) is graded wrong; play_all (web-1) ALL PASSED; smoke 30/30; a11y 0
   serious/critical, plus axe on the HTML exercise screen in light + dark: 0 violations.
+  Then built the **SQL runner** (`src/engine/sqlHarness.ts` + `sql.worker.ts`, sql.js pinned to 1.15.2 because 1.16.0
+  was only 3 days old; wasm is bundled, ~340 KB gzipped, loaded only for SQL lessons; `@codemirror/lang-sql` for colors;
+  new optional `setup` field on code steps) and wrote **SQL & Databases** (`src/content/lessons/sql.ts`): 9 lessons,
+  3 checkpoints, 1 final. `npm test` now runs SQL solutions/starters in real SQLite, and a new test runs every
+  "What does this query return?" question against the sample data (it caught one wrong answer, fixed). New
+  `tests/sql.test.ts` (7 runner tests). play_all (sql) ALL PASSED; smoke 30/30; a11y 0; axe on the SQL exercise
+  screen in light + dark: 0 violations.
 
 - **Session 1:** planned the curriculum (24 courses / 306 lessons); built the app, lesson engine, Python/JS
   runners, progress + accounts, search, Practice Arena, Pip and the design system; 16 lessons + 7 problems.

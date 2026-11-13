@@ -12,6 +12,9 @@ import { PROBLEMS } from '../src/content/problems';
 import type { CodeStep, QuestionStep, Step } from '../src/content/types';
 import { PY_HARNESS } from '../src/engine/pythonHarness';
 import { runJs } from '../src/engine/jsHarness';
+import { runSqlWith, type SqlJsLike } from '../src/engine/sqlHarness';
+import initSqlJs from 'sql.js';
+import { SHOP } from '../src/content/lessons/sql';
 import { gradeAnswer, gradeChoice, gradeCode, gradeFill, gradeOrder, normalizeOutput } from '../src/engine/grading';
 import type { RunResult } from '../src/engine/types';
 import { checkGoal, simulate } from '../src/engine/shell';
@@ -38,8 +41,13 @@ function allSteps(): { where: string; step: Step }[] {
   return out;
 }
 
+// sql.js loads its WebAssembly once (top-level await is fine in Vitest).
+const SQL = (await initSqlJs()) as SqlJsLike;
+
 const run = (s: CodeStep, code: string): RunResult =>
-  s.language === 'python' ? runPy(code, s.tests ?? []) : runJs(code, s.tests ?? []);
+  s.language === 'python' ? runPy(code, s.tests ?? [])
+    : s.language === 'sql' ? runSqlWith(SQL, s.setup ?? '', code, s.tests ?? [])
+    : runJs(code, s.tests ?? []);
 
 describe('structure', () => {
   it('ids are unique', () => {
@@ -175,7 +183,7 @@ describe('code exercises', () => {
     const codeSteps = allSteps().filter((x) => x.step.kind === 'code') as { where: string; step: CodeStep }[];
     expect(codeSteps.length).toBeGreaterThan(0);
     for (const { where, step } of codeSteps) {
-      if (step.language !== 'python' && step.language !== 'javascript') continue;
+      if (step.language !== 'python' && step.language !== 'javascript' && step.language !== 'sql') continue;
       const good = gradeCode(step, run(step, step.solution));
       expect(good.failures, `${where} solution fails`).toEqual([]);
       // __perf_probe__ makes speed tests abort slow starters after 3 s instead of hanging (see fast() in _helpers.ts)
@@ -183,6 +191,43 @@ describe('code exercises', () => {
       expect(starter.passed, `${where} starter already passes`).toBe(false);
     }
   }, 600_000);
+});
+
+describe('sql snippets in questions', () => {
+  // "What does this query return?" / "How many rows…?" / "How many products are left…?" questions are run
+  // against the sample shop (SHOP in src/content/lessons/sql.ts) and must match the marked answer.
+  it('match what SQLite actually returns', () => {
+    const problems: string[] = [];
+    let checked = 0;
+    for (const { where, step } of allSteps()) {
+      if ((step.kind !== 'answer' && step.kind !== 'choice') || !step.code || step.language !== 'sql') continue;
+      const p = step.prompt;
+      const db = new (SQL as unknown as { Database: new () => { exec(s: string): { values: unknown[][] }[]; close(): void } }).Database();
+      db.exec(SHOP);
+      let got: string | null = null;
+      try {
+        if (/^how many products are left/i.test(p)) {
+          db.exec(step.code);
+          got = String(db.exec('SELECT COUNT(*) FROM products')[0].values[0][0]);
+        } else if (/^how many rows does this query return/i.test(p) || /^what does this query return\?.*number of rows/i.test(p)) {
+          const sets = db.exec(step.code);
+          got = String(sets.length ? sets[sets.length - 1].values.length : 0);
+        } else if (/^what does this query return/i.test(p)) {
+          const sets = db.exec(step.code);
+          got = String(sets[sets.length - 1].values[0][0]);
+        }
+      } catch (e) {
+        problems.push(`${where}: SQL error ${(e as Error).message}`);
+      }
+      db.close();
+      if (got === null) continue;
+      checked++;
+      const ok = step.kind === 'answer' ? gradeAnswer(step, got) : step.choices[step.answer] === got;
+      if (!ok) problems.push(`${where}: returns ${got} but the answer is ${JSON.stringify(step.kind === 'answer' ? step.accept : step.choices[step.answer])}`);
+    }
+    expect(problems, problems.join('\n')).toEqual([]);
+    expect(checked).toBeGreaterThan(10);
+  });
 });
 
 describe('html exercises', () => {

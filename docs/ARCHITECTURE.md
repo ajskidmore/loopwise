@@ -15,6 +15,8 @@ src/
     python.worker.ts       Pyodide in a module Web Worker
     js.worker.ts           JavaScript in a Web Worker
     htmlHarness.ts         HTML/CSS: renders the page in a sandboxed iframe and runs the page checks
+    sql.worker.ts          SQL: sql.js (SQLite in WebAssembly) in a Web Worker
+    sqlHarness.ts          SQL: fresh database + step setup + learner SQL, then checks (shared with npm test)
     pythonHarness.ts       Python code that runs learner code + tests (shared with tests/)
     jsHarness.ts           same for JS
     shell.ts               pretend bash + in-memory file system for terminal exercises (pure, tested)
@@ -51,6 +53,11 @@ Any checkpoint can be taken early to "test out". Course prerequisites are *recom
 `runner.ts` kills and recreates the worker if a run exceeds 8 s. Tests run after the learner's code, in the
 same scope, and can read `__output__` (everything printed) and `__source__` (the code itself).
 Python = Pyodide (CPython compiled to WebAssembly) from jsDelivr; set `VITE_PYODIDE_URL` to self-host.
+
+**SQL exercises** (`language: 'sql'`) run in sql.js inside a worker. Every run builds a fresh in-memory database
+from the step's `setup` SQL, runs the learner's SQL, then the checks (`result` = last query's rows, `query(sql)` to
+inspect changes). Nothing is stored, so `DROP TABLE` can't hurt. The .wasm (~340 KB gzipped) is bundled with the site
+(no CDN) and only downloaded when a SQL lesson opens. `npm test` uses the same harness with sql.js in Node.
 
 **HTML/CSS exercises** (`language: 'html'`) don't use a worker. The learner's page is rendered in an iframe with
 `sandbox="allow-same-origin"` and **no** `allow-scripts`, so `<script>` tags and `onclick=`/`onerror=` attributes
