@@ -1,7 +1,7 @@
 # Loopwise — Project Status & Handoff
 
 > **Read this first when continuing in a new session.** Update it at the end of every session.
-> Last updated: **2026-11-13** (session 5: Firebase setup + first deploy, Probability & Statistics, Linear Algebra, Calculus, JavaScript, Web, SQL, Theory, Software Engineering, ML, Grad-Ready, C, Java, Architecture/OS and Networks/Security courses + HTML/CSS preview + SQL runner)
+> Last updated: **2026-11-13** (session 5: Firebase setup + first deploy, Probability & Statistics, Linear Algebra, Calculus, JavaScript, Web, SQL, Theory, Software Engineering, ML, Grad-Ready, C, Java, Architecture/OS, Networks/Security, C++ and Language Tour courses + HTML/CSS preview + SQL runner: the whole roadmap is written)
 >
 > **Live:** https://loopwise-de7e1.web.app · **Repo:** https://github.com/ajskidmore/loopwise (public)
 
@@ -57,8 +57,11 @@ Never imitate Duolingo's owl or any other brand's character.
 - 🖥️ `architecture-os` Architecture & Operating Systems — 4 units, 11 lessons (gates/adders, instruction cycle/pipelines, caches/LRU, processes, threads, scheduling, race conditions, locks/semaphores, deadlock, virtual memory/page tables, file systems/inodes). Explain + quiz with Python simulations.
 - 🔐 `networks-security` Networks & Security — 2 units, 6 lessons (TCP/IP layers, IP/TCP/UDP, HTTP/DNS, encryption vs hashing/TLS, password storage/sessions/2FA, SQL injection/XSS/access control). Defensive framing; Python exercises (IPv4 checks, request parsing, DNS resolution, SHA-256, salted hashes, HTML escaping).
 - C and Java "What does this print?" snippets are NOT run by `npm test`. All 42 were compiled and run with clang and javac 17 before publishing (and every "won't compile" example confirmed to fail). Re-check by hand after editing them.
+- ➕ `cpp` C++ — 2 units, 6 lessons (iostream/namespaces/references, classes/RAII/destructors, STL vector/map/algorithms, templates/concepts, smart pointers, move semantics). Reading + quiz; Python exercises (context manager as RAII, generic max, move simulation).
+- 🗺️ `languages-tour` Language Tour — 3 units, 8 lessons (Go, Rust, C#, Kotlin/Swift, PHP/Ruby, Bash, R, Haskell): each language's purpose, look and big idea, practiced in Python or the practice terminal (Bash pipeline). Only Swift/Ruby/Bash have "What does this … code print?" questions (they could be run); the others are concept/reading questions only.
+- C++/Swift/Ruby/Bash output snippets are NOT run by `npm test`: all 26 were run with clang++ -std=c++20, swiftc, ruby and bash before publishing. Note: on this Mac `swift` fails with the default macOS 15 SDK (compiler 5.10 vs SDK 6.0); use `swiftc -sdk /Library/Developer/CommandLineTools/SDKs/MacOSX14.sdk`.
 
-Totals: **292 lessons, 87 checkpoints, 22 final exams, 33 practice problems** (of 306 planned; only `cpp` and `languages-tour` remain) (of 306 lessons planned across 24 courses). The whole "CS core" a master's program assumes (programming, discrete math, data structures, algorithms) is now written.
+Totals: **306 lessons, 92 checkpoints, 24 final exams, 33 practice problems**: every lesson on the roadmap (24 courses) is written (of 306 lessons planned across 24 courses). The whole "CS core" a master's program assumes (programming, discrete math, data structures, algorithms) is now written.
 
 **Features:**
 - Learning path with unlocking, test-out checkpoints, final exams; course switcher; "up next" card
@@ -91,9 +94,7 @@ Totals: **292 lessons, 87 checkpoints, 22 final exams, 33 practice problems** (o
 ## Next steps (in priority order)
 
 1. Finish the live checks listed under "Known gaps" (password reset, Google sign-in, guest→cloud merge, a phone).
-2. Content, in path order:
-   - `cpp` (6 lessons) and `languages-tour` (8 lessons): same reading + quiz approach (owner chose reading + quiz over a paid server runner on 2026-11-13)
-   - Later: a server code runner for C/C++/Java (Firebase Functions + Blaze plan = cost, owner decision)
+2. Content: the roadmap is complete. Ideas: more Practice Arena problems (only 33), more problems for the newer courses, a review pass by real learners (beta testers), and a server code runner for C/C++/Java later (Firebase Functions + Blaze plan = cost, owner decision; owner chose reading + quiz on 2026-11-13)
 3. A simple Git simulator for the practice terminal (init/add/commit/log/branch) to make tl-2 hands-on
 4. Leaderboard (weekly XP, opt-in), reminders, offline service worker, server runner for Java/C/C++
 
@@ -166,6 +167,9 @@ Totals: **292 lessons, 87 checkpoints, 22 final exams, 33 practice problems** (o
   Then (owner chose reading + quiz for non-browser languages) wrote **C & Computer Systems**, **Java & OOP**,
   **Architecture & OS** and **Networks & Security**: 37 lessons, 12 checkpoints, 4 finals. `npm test` 45 passed;
   42 C/Java snippets verified with clang/javac; play_all (all four) ALL PASSED; smoke 30/30; a11y 0 serious/critical.
+  Then wrote **C++** (6 lessons) and **Language Tour** (8 lessons): 5 checkpoints, 2 finals. `npm test` 45 passed;
+  26 C++/Swift/Ruby/Bash snippets verified by running them; play_all (both) ALL PASSED; smoke 30/30; a11y 0.
+  **All 306 lessons in 24 courses are now written and tested.**
 
 - **Session 1:** planned the curriculum (24 courses / 306 lessons); built the app, lesson engine, Python/JS
   runners, progress + accounts, search, Practice Arena, Pip and the design system; 16 lessons + 7 problems.
