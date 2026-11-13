@@ -749,7 +749,7 @@ const TRACKS: TrackDef[] = [
       u('gr-3', 'Capstones', 'Big projects that tie it together.', [
         ['capstone-1', 'Capstone: build an interpreter', 'A tiny programming language in Python.', 'interpreter, parser, capstone'],
         ['capstone-2', 'Capstone: route planner', 'Graphs + Dijkstra on real data.', 'dijkstra, graph, capstone'],
-        ['capstone-3', 'Capstone: ML from scratch', 'Train a model with only numpy.', 'machine learning, numpy, capstone'],
+        ['capstone-3', 'Capstone: ML from scratch', 'Train a classifier in plain Python.', 'machine learning, logistic regression, capstone'],
       ]),
     ],
   },
